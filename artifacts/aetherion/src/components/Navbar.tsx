@@ -10,7 +10,10 @@ const navLinks = [
   { label: "Clans", href: "/clans" },
   { label: "Artifacts", href: "/artifacts" },
   { label: "Project AETHER", href: "/project-aether" },
+  { label: "World", href: "/world" },
+  { label: "Power", href: "/power" },
   { label: "Timeline", href: "/timeline" },
+  { label: "People", href: "/people" },
   { label: "Archive", href: "/archive" },
   { label: "Search", href: "/search" },
   { label: "Author", href: "/author" },
@@ -53,13 +56,13 @@ export default function Navbar() {
             </Link>
 
             {/* Desktop links */}
-            <div className="hidden lg:flex items-center gap-1">
+            <div className="hidden lg:flex items-center gap-0.5">
               {navLinks.map((link) => {
                 const active = location === link.href;
                 return (
                   <Link key={link.href} href={link.href}>
                     <span
-                      className={`px-3 py-1.5 text-xs font-mono rounded transition-all duration-200 cursor-pointer ${
+                      className={`px-2 py-1 text-[10px] font-mono rounded transition-all duration-200 cursor-pointer tracking-wide ${
                         active
                           ? "text-cyan-400 bg-cyan-950/50"
                           : "text-slate-400 hover:text-cyan-400 hover:bg-slate-900/50"

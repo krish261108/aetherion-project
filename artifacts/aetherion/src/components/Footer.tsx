@@ -34,8 +34,12 @@ export default function Footer() {
                 ["Clans", "/clans"],
                 ["Artifacts", "/artifacts"],
                 ["Project AETHER", "/project-aether"],
+                ["World & Layers", "/world"],
+                ["Power System", "/power"],
+                ["People Types", "/people"],
                 ["Timeline", "/timeline"],
                 ["Hidden Archive", "/archive"],
+                ["Search", "/search"],
                 ["Author", "/author"],
               ].map(([label, href]) => (
                 <Link
