@@ -1,8 +1,337 @@
-import { motion } from "framer-motion";
-import { Pen, BookOpen, Globe, MessageSquare } from "lucide-react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Pen, BookOpen, Globe, MessageSquare, X, Send, Radio, Users, CheckCircle, Zap, Lock } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
 
+function NewsletterModal({ onClose }: { onClose: () => void }) {
+  const [email, setEmail] = useState("");
+  const [phase, setPhase] = useState<"input" | "transmitting" | "done">("input");
+  const [typedText, setTypedText] = useState("");
+
+  const confirmText = "TRANSMISSION RECEIVED. YOU ARE NOW PART OF THE AETHER INTELLIGENCE NETWORK. UPDATES ON THE AETHERION CYCLE WILL BE RELAYED AS EVENTS UNFOLD. STAY AWARE. THE VEIL IS WATCHING.";
+
+  useEffect(() => {
+    if (phase !== "done") return;
+    let i = 0;
+    const t = setInterval(() => {
+      setTypedText(confirmText.slice(0, i));
+      i++;
+      if (i > confirmText.length) clearInterval(t);
+    }, 22);
+    return () => clearInterval(t);
+  }, [phase]);
+
+  const handleSubmit = () => {
+    if (!email.trim()) return;
+    setPhase("transmitting");
+    setTimeout(() => setPhase("done"), 2000);
+  };
+
+  return (
+    <motion.div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ background: "rgba(3,7,18,0.94)", backdropFilter: "blur(20px)" }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+    >
+      <motion.div
+        className="w-full max-w-md relative overflow-hidden rounded-lg"
+        style={{ background: "rgba(3,7,18,0.98)", border: "1px solid rgba(0,212,255,0.3)", boxShadow: "0 0 80px rgba(0,212,255,0.12)" }}
+        initial={{ scale: 0.85, opacity: 0, y: 30 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.85, opacity: 0 }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Scan lines */}
+        <div className="pointer-events-none absolute inset-0 opacity-[0.03]"
+          style={{ background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,212,255,1) 2px, rgba(0,212,255,1) 4px)" }} />
+
+        {/* Header stripe */}
+        <div className="h-1 w-full" style={{ background: "linear-gradient(90deg, transparent, rgba(0,212,255,0.8), rgba(139,92,246,0.8), transparent)" }} />
+
+        <div className="p-6 relative z-10">
+          <button className="absolute top-4 right-4 text-slate-600 hover:text-white transition-colors" onClick={onClose}>
+            <X size={16} />
+          </button>
+
+          <div className="flex items-center gap-2 mb-1">
+            <Radio size={14} className="text-cyan-400" />
+            <span className="text-xs font-mono text-cyan-500/70 tracking-widest">AETHER INTELLIGENCE NETWORK</span>
+          </div>
+          <h2 className="text-xl font-bold text-white mb-1" style={{ fontFamily: "'Orbitron', sans-serif" }}>
+            Universe Newsletter
+          </h2>
+          <p className="text-xs text-slate-500 font-mono mb-6">
+            Receive classified updates as the Aetherion Cycle universe expands.
+          </p>
+
+          <AnimatePresence mode="wait">
+            {phase === "input" && (
+              <motion.div key="input" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <div className="mb-4">
+                  <div className="text-xs font-mono text-slate-500 mb-2">&gt; ENTER TRANSMISSION ADDRESS</div>
+                  <div className="flex gap-2">
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+                      placeholder="your@email.com"
+                      className="flex-1 px-3 py-2 text-sm font-mono text-cyan-300 placeholder-slate-700 outline-none rounded"
+                      style={{ background: "rgba(0,212,255,0.06)", border: "1px solid rgba(0,212,255,0.2)" }}
+                      autoFocus
+                    />
+                    <motion.button
+                      onClick={handleSubmit}
+                      className="px-4 py-2 rounded flex items-center gap-2 text-xs font-mono text-cyan-400"
+                      style={{ background: "rgba(0,212,255,0.12)", border: "1px solid rgba(0,212,255,0.3)" }}
+                      whileHover={{ scale: 1.04, boxShadow: "0 0 20px rgba(0,212,255,0.3)" }}
+                      whileTap={{ scale: 0.97 }}
+                      data-testid="button-newsletter-submit"
+                    >
+                      <Send size={12} /> Send
+                    </motion.button>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  {["Book release announcements", "Classified lore drops", "Universe expansion updates", "Project AETHER intelligence reports"].map((item) => (
+                    <div key={item} className="flex items-center gap-2 text-xs text-slate-500 font-mono">
+                      <Zap size={10} className="text-cyan-700" /> {item}
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+
+            {phase === "transmitting" && (
+              <motion.div key="transmitting" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="py-8 text-center">
+                <motion.div
+                  className="w-12 h-12 rounded-full mx-auto mb-4"
+                  style={{ background: "radial-gradient(circle, rgba(0,212,255,0.3), transparent)", border: "1px solid rgba(0,212,255,0.4)" }}
+                  animate={{ scale: [1, 1.15, 1], opacity: [0.6, 1, 0.6] }}
+                  transition={{ duration: 0.8, repeat: Infinity }}
+                />
+                <div className="text-xs font-mono text-cyan-400 tracking-widest animate-pulse">TRANSMITTING...</div>
+              </motion.div>
+            )}
+
+            {phase === "done" && (
+              <motion.div key="done" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                <div className="flex items-center gap-2 mb-4">
+                  <CheckCircle size={16} className="text-cyan-400 shrink-0" />
+                  <span className="text-xs font-mono text-cyan-400 tracking-widest">ACCESS CONFIRMED</span>
+                </div>
+                <div
+                  className="p-4 rounded text-xs font-mono leading-relaxed"
+                  style={{ background: "rgba(0,212,255,0.04)", border: "1px solid rgba(0,212,255,0.15)", color: "rgba(0,212,255,0.8)", minHeight: 80 }}
+                >
+                  {typedText}
+                  <motion.span animate={{ opacity: [1, 0] }} transition={{ duration: 0.5, repeat: Infinity }} className="inline-block ml-0.5 w-1.5 h-3 bg-cyan-400 align-middle" />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+const communityPosts = [
+  { user: "VOID_WATCHER", time: "2 HOURS AGO", clan: "Nytheris", msg: "Just re-read Book III. The moment Riven connects to the Void — I still can't believe how that scene lands. Everything changes there.", clearance: "LEVEL 2" },
+  { user: "LIORA_ARCHIVE", time: "5 HOURS AGO", clan: "Solaryn", msg: "Book IV spoiler: the Celestial Plane revelation actually recontextualizes every single interaction from Book I. Second read hits completely differently.", clearance: "LEVEL 3" },
+  { user: "AETHER_ANALYST", time: "11 HOURS AGO", clan: "Nerathis", msg: "Theory: Nulls aren't missing Aetherion — they're *hiding* from it. The archive says they're 'difficult to detect.' That has to be intentional.", clearance: "LEVEL 2" },
+  { user: "FRACTURE_KEEPER", time: "1 DAY AGO", clan: "Chronis", msg: "The Timeline makes so much more sense when you read the spin-offs first. The First Epoch gives you the emotional foundation for everything in Book IV.", clearance: "LEVEL 1" },
+  { user: "PROJECT_X", time: "1 DAY AGO", clan: "Severed", msg: "I think Arkan genuinely believes he's saving existence. That's what makes him terrifying — he's not wrong that balance is fragile. He's just completely wrong about the solution.", clearance: "LEVEL 3" },
+];
+
+const clanColors: Record<string, string> = {
+  Nytheris: "text-red-400",
+  Solaryn: "text-amber-400",
+  Nerathis: "text-purple-400",
+  Chronis: "text-teal-400",
+  Severed: "text-green-400",
+};
+
+function CommunityModal({ onClose }: { onClose: () => void }) {
+  const [activeTab, setActiveTab] = useState<"feed" | "join">("feed");
+  const [joined, setJoined] = useState(false);
+  const [handle, setHandle] = useState("");
+  const [selectedClan, setSelectedClan] = useState("");
+  const [scanning, setScanning] = useState(false);
+
+  const handleJoin = () => {
+    if (!handle || !selectedClan) return;
+    setScanning(true);
+    setTimeout(() => { setScanning(false); setJoined(true); }, 2200);
+  };
+
+  return (
+    <motion.div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ background: "rgba(3,7,18,0.94)", backdropFilter: "blur(20px)" }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+    >
+      <motion.div
+        className="w-full max-w-lg relative overflow-hidden rounded-lg"
+        style={{ background: "rgba(5,8,25,0.99)", border: "1px solid rgba(139,92,246,0.3)", boxShadow: "0 0 80px rgba(139,92,246,0.12)" }}
+        initial={{ scale: 0.85, opacity: 0, y: 30 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.85, opacity: 0 }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="h-1 w-full" style={{ background: "linear-gradient(90deg, transparent, rgba(139,92,246,0.8), rgba(0,212,255,0.8), transparent)" }} />
+
+        <div className="p-6 relative z-10">
+          <button className="absolute top-4 right-4 text-slate-600 hover:text-white transition-colors" onClick={onClose}>
+            <X size={16} />
+          </button>
+
+          <div className="flex items-center gap-2 mb-1">
+            <Users size={14} className="text-violet-400" />
+            <span className="text-xs font-mono text-violet-500/70 tracking-widest">AETHERION COMMUNITY — VEIL NETWORK</span>
+          </div>
+          <h2 className="text-xl font-bold text-white mb-4" style={{ fontFamily: "'Orbitron', sans-serif" }}>
+            The Veil Network
+          </h2>
+
+          {/* Tabs */}
+          <div className="flex gap-2 mb-5">
+            {(["feed", "join"] as const).map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-3 py-1.5 text-xs font-mono rounded border transition-all ${activeTab === tab ? "text-violet-400 border-violet-500/60 bg-violet-950/40" : "text-slate-500 border-slate-800 hover:text-slate-300"}`}
+              >
+                {tab === "feed" ? "Community Feed" : "Join the Network"}
+              </button>
+            ))}
+          </div>
+
+          <AnimatePresence mode="wait">
+            {activeTab === "feed" && (
+              <motion.div key="feed" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }}>
+                <div className="space-y-3 max-h-72 overflow-y-auto pr-1">
+                  {communityPosts.map((post, i) => (
+                    <motion.div
+                      key={i}
+                      className="p-3 rounded"
+                      style={{ background: "rgba(139,92,246,0.05)", border: "1px solid rgba(139,92,246,0.12)" }}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.07 }}
+                    >
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <div className="w-5 h-5 rounded-full flex items-center justify-center" style={{ background: "rgba(139,92,246,0.2)", border: "1px solid rgba(139,92,246,0.3)" }}>
+                          <Lock size={8} className="text-violet-400" />
+                        </div>
+                        <span className="text-xs font-mono text-violet-300">{post.user}</span>
+                        <span className={`text-xs font-mono ${clanColors[post.clan] ?? "text-slate-500"}`}>[{post.clan}]</span>
+                        <span className="text-xs text-slate-700 ml-auto font-mono">{post.time}</span>
+                      </div>
+                      <p className="text-xs text-slate-400 leading-relaxed">{post.msg}</p>
+                    </motion.div>
+                  ))}
+                </div>
+                <div className="mt-3 text-center text-xs text-slate-700 font-mono">247 MEMBERS — VEIL NETWORK ACTIVE</div>
+              </motion.div>
+            )}
+
+            {activeTab === "join" && !joined && !scanning && (
+              <motion.div key="join" initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }}>
+                <div className="space-y-4">
+                  <div>
+                    <div className="text-xs font-mono text-slate-500 mb-1.5">&gt; DESIGNATION (USERNAME)</div>
+                    <input
+                      type="text"
+                      value={handle}
+                      onChange={(e) => setHandle(e.target.value)}
+                      placeholder="Choose your archive handle..."
+                      className="w-full px-3 py-2 text-sm font-mono text-violet-300 placeholder-slate-700 outline-none rounded"
+                      style={{ background: "rgba(139,92,246,0.06)", border: "1px solid rgba(139,92,246,0.2)" }}
+                      autoFocus
+                    />
+                  </div>
+                  <div>
+                    <div className="text-xs font-mono text-slate-500 mb-1.5">&gt; CLAN AFFILIATION</div>
+                    <div className="grid grid-cols-2 gap-2">
+                      {["Solaryn", "Nytheris", "Chronis", "Aetherion", "Terravon", "Nerathis", "Valekar", "Severed"].map((clan) => (
+                        <button
+                          key={clan}
+                          onClick={() => setSelectedClan(clan)}
+                          className={`px-2 py-1.5 text-xs font-mono rounded border transition-all text-left ${selectedClan === clan ? "text-violet-300 border-violet-500/60 bg-violet-950/50" : "text-slate-500 border-slate-800 hover:text-slate-300"}`}
+                        >
+                          {selectedClan === clan && <span className="mr-1 text-violet-400">&#10003;</span>}
+                          {clan}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <motion.button
+                    onClick={handleJoin}
+                    disabled={!handle || !selectedClan}
+                    className="w-full py-2.5 text-xs font-mono rounded tracking-widest transition-all disabled:opacity-30"
+                    style={{ background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.4)", color: "rgba(167,139,250,1)" }}
+                    whileHover={handle && selectedClan ? { scale: 1.02, boxShadow: "0 0 25px rgba(139,92,246,0.3)" } : {}}
+                    data-testid="button-community-join"
+                  >
+                    REQUEST VEIL NETWORK ACCESS
+                  </motion.button>
+                </div>
+              </motion.div>
+            )}
+
+            {scanning && (
+              <motion.div key="scanning" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="py-10 text-center">
+                <motion.div
+                  className="w-14 h-14 rounded-full mx-auto mb-4"
+                  style={{ background: "radial-gradient(circle, rgba(139,92,246,0.3), transparent)", border: "1px solid rgba(139,92,246,0.5)" }}
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+                />
+                <div className="text-xs font-mono text-violet-400 tracking-widest">SCANNING AETHERION SIGNATURE...</div>
+                <div className="text-xs font-mono text-slate-600 mt-2">VERIFYING CLAN AFFILIATION</div>
+              </motion.div>
+            )}
+
+            {joined && !scanning && (
+              <motion.div key="joined" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-4 text-center">
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                  className="w-14 h-14 rounded-full mx-auto mb-4 flex items-center justify-center"
+                  style={{ background: "rgba(139,92,246,0.2)", border: "1px solid rgba(139,92,246,0.5)", boxShadow: "0 0 30px rgba(139,92,246,0.4)" }}
+                >
+                  <CheckCircle size={24} className="text-violet-400" />
+                </motion.div>
+                <div className="text-sm font-bold text-violet-300 mb-2" style={{ fontFamily: "'Orbitron', sans-serif" }}>
+                  WELCOME, {handle.toUpperCase()}
+                </div>
+                <div className={`text-xs font-mono mb-3 ${clanColors[selectedClan] ?? "text-slate-400"}`}>
+                  [{selectedClan}] AFFILIATION CONFIRMED
+                </div>
+                <p className="text-xs text-slate-500 font-mono leading-relaxed">
+                  You are now part of the Veil Network.<br />
+                  The archive sees you. The system remembers.
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 export default function Author() {
+  const [modal, setModal] = useState<null | "newsletter" | "community">(null);
+
   return (
     <div className="min-h-screen pt-24 pb-20 px-4 relative z-10">
       <div className="max-w-4xl mx-auto">
@@ -15,35 +344,19 @@ export default function Author() {
         {/* Author hero */}
         <motion.div
           className="mb-10 p-8 rounded text-center relative overflow-hidden"
-          style={{
-            background: "rgba(10,15,40,0.8)",
-            border: "1px solid rgba(0,212,255,0.2)",
-            boxShadow: "0 0 60px rgba(0,212,255,0.06)",
-          }}
+          style={{ background: "rgba(10,15,40,0.8)", border: "1px solid rgba(0,212,255,0.2)", boxShadow: "0 0 60px rgba(0,212,255,0.06)" }}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div
-            className="absolute inset-0 opacity-5"
-            style={{
-              background: "radial-gradient(ellipse at 50% 0%, rgba(0,212,255,0.4), transparent 60%)",
-            }}
-          />
+          <div className="absolute inset-0 opacity-5" style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(0,212,255,0.4), transparent 60%)" }} />
           <div className="relative z-10">
             <div
               className="w-20 h-20 rounded-full mx-auto mb-5 flex items-center justify-center"
-              style={{
-                background: "radial-gradient(circle, rgba(0,212,255,0.2), rgba(139,92,246,0.1))",
-                border: "1px solid rgba(0,212,255,0.3)",
-                boxShadow: "0 0 30px rgba(0,212,255,0.2)",
-              }}
+              style={{ background: "radial-gradient(circle, rgba(0,212,255,0.2), rgba(139,92,246,0.1))", border: "1px solid rgba(0,212,255,0.3)", boxShadow: "0 0 30px rgba(0,212,255,0.2)" }}
             >
               <Pen size={28} className="text-cyan-400" />
             </div>
-            <h2
-              className="text-3xl font-black text-white mb-2 tracking-wider"
-              style={{ fontFamily: "'Orbitron', sans-serif" }}
-            >
+            <h2 className="text-3xl font-black text-white mb-2 tracking-wider" style={{ fontFamily: "'Orbitron', sans-serif" }}>
               KRISH SINGH
             </h2>
             <div className="text-cyan-400/70 text-sm font-mono mb-4">Creator — The Aetherion Cycle</div>
@@ -57,30 +370,10 @@ export default function Author() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
           {[
-            {
-              icon: BookOpen,
-              title: "Author Mission",
-              content: "To build a universe that explores the deepest questions of existence — not through fantasy tropes or sci-fi clichés, but through a system that makes the reader think. The Aetherion Cycle is designed to feel like uncovering a truth that was always there.",
-              color: "cyan",
-            },
-            {
-              icon: Globe,
-              title: "Universe Vision",
-              content: "A universe that grows across books, spin-offs, visual systems, lore files, and interactive storytelling. Not a standalone story — a living world with enough depth to explore indefinitely.",
-              color: "violet",
-            },
-            {
-              icon: Pen,
-              title: "Why Aetherion Exists",
-              content: "The Aetherion Cycle exists because the question 'what if science and magic were the same thing, just misunderstood?' deserved a full universe to explore. Not a short answer — a seven-book journey from confusion to understanding.",
-              color: "gold",
-            },
-            {
-              icon: MessageSquare,
-              title: "Future Plans",
-              content: "Seven core books. Three confirmed spin-offs. A visual identity system, an interactive archive, a timeline that expands with each release, and a community that grows with the universe.",
-              color: "teal",
-            },
+            { icon: BookOpen, title: "Author Mission", content: "To build a universe that explores the deepest questions of existence — not through fantasy tropes or sci-fi clichés, but through a system that makes the reader think. The Aetherion Cycle is designed to feel like uncovering a truth that was always there.", color: "cyan" },
+            { icon: Globe, title: "Universe Vision", content: "A universe that grows across books, spin-offs, visual systems, lore files, and interactive storytelling. Not a standalone story — a living world with enough depth to explore indefinitely.", color: "violet" },
+            { icon: Pen, title: "Why Aetherion Exists", content: "The Aetherion Cycle exists because the question 'what if science and magic were the same thing, just misunderstood?' deserved a full universe to explore. Not a short answer — a seven-book journey from confusion to understanding.", color: "gold" },
+            { icon: MessageSquare, title: "Future Plans", content: "Seven core books. Three confirmed spin-offs. A visual identity system, an interactive archive, a timeline that expands with each release, and a community that grows with the universe.", color: "teal" },
           ].map((card, i) => {
             const colors: Record<string, { bg: string; border: string; text: string }> = {
               cyan: { bg: "rgba(0,212,255,0.06)", border: "rgba(0,212,255,0.2)", text: "text-cyan-400" },
@@ -101,9 +394,7 @@ export default function Author() {
                 whileHover={{ scale: 1.02 }}
               >
                 <card.icon size={20} className={`${col.text} mb-3`} />
-                <h3 className={`text-sm font-bold mb-3 ${col.text}`} style={{ fontFamily: "'Orbitron', sans-serif" }}>
-                  {card.title}
-                </h3>
+                <h3 className={`text-sm font-bold mb-3 ${col.text}`} style={{ fontFamily: "'Orbitron', sans-serif" }}>{card.title}</h3>
                 <p className="text-xs text-slate-400 leading-relaxed">{card.content}</p>
               </motion.div>
             );
@@ -113,10 +404,7 @@ export default function Author() {
         {/* Creator note */}
         <motion.div
           className="p-6 rounded text-center"
-          style={{
-            background: "rgba(0,212,255,0.04)",
-            border: "1px solid rgba(0,212,255,0.15)",
-          }}
+          style={{ background: "rgba(0,212,255,0.04)", border: "1px solid rgba(0,212,255,0.15)" }}
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
@@ -129,26 +417,63 @@ export default function Author() {
           <div className="mt-4 text-xs text-slate-600 font-mono">— KRISH SINGH</div>
         </motion.div>
 
-        {/* Social placeholders */}
+        {/* Action buttons */}
         <div className="mt-8 flex flex-wrap gap-3 justify-center">
-          {[
-            { label: "Contact the Author", href: "mailto:singh.krish261108@gmail.com" },
-            { label: "Follow Updates", href: null },
-            { label: "Universe Newsletter", href: null },
-            { label: "Community", href: null },
-          ].map(({ label, href }) => (
-            <motion.a
-              key={label}
-              href={href ?? undefined}
-              className="px-4 py-2 text-xs font-mono rounded border text-slate-500 border-slate-800 hover:text-cyan-400 hover:border-cyan-900 transition-all cursor-pointer"
-              whileHover={{ scale: 1.04 }}
-              data-testid={`button-author-${label.toLowerCase().replace(/\s/g, "-")}`}
-            >
-              {label}
-            </motion.a>
-          ))}
+          <motion.a
+            href="mailto:singh.krish261108@gmail.com"
+            className="px-4 py-2 text-xs font-mono rounded border text-slate-400 border-slate-700 hover:text-cyan-400 hover:border-cyan-900 transition-all cursor-pointer"
+            whileHover={{ scale: 1.04 }}
+            data-testid="button-author-contact-the-author"
+          >
+            Contact the Author
+          </motion.a>
+
+          <motion.button
+            className="px-4 py-2 text-xs font-mono rounded border text-slate-400 border-slate-700 hover:text-slate-300 transition-all cursor-pointer"
+            whileHover={{ scale: 1.04 }}
+            data-testid="button-author-follow-updates"
+          >
+            Follow Updates
+          </motion.button>
+
+          <motion.button
+            onClick={() => setModal("newsletter")}
+            className="relative px-4 py-2 text-xs font-mono rounded border overflow-hidden transition-all cursor-pointer"
+            style={{ color: "rgba(0,212,255,0.8)", borderColor: "rgba(0,212,255,0.3)", background: "rgba(0,212,255,0.05)" }}
+            whileHover={{ scale: 1.04, boxShadow: "0 0 20px rgba(0,212,255,0.2)" }}
+            data-testid="button-author-universe-newsletter"
+          >
+            <motion.span
+              className="absolute inset-0 opacity-0"
+              style={{ background: "linear-gradient(90deg, transparent, rgba(0,212,255,0.1), transparent)" }}
+              animate={{ opacity: [0, 1, 0], x: ["-100%", "100%"] }}
+              transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 1 }}
+            />
+            Universe Newsletter
+          </motion.button>
+
+          <motion.button
+            onClick={() => setModal("community")}
+            className="relative px-4 py-2 text-xs font-mono rounded border overflow-hidden transition-all cursor-pointer"
+            style={{ color: "rgba(139,92,246,0.8)", borderColor: "rgba(139,92,246,0.35)", background: "rgba(139,92,246,0.07)" }}
+            whileHover={{ scale: 1.04, boxShadow: "0 0 20px rgba(139,92,246,0.25)" }}
+            data-testid="button-author-community"
+          >
+            <motion.span
+              className="absolute inset-0 opacity-0"
+              style={{ background: "linear-gradient(90deg, transparent, rgba(139,92,246,0.15), transparent)" }}
+              animate={{ opacity: [0, 1, 0], x: ["-100%", "100%"] }}
+              transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 1.5 }}
+            />
+            Community
+          </motion.button>
         </div>
       </div>
+
+      <AnimatePresence>
+        {modal === "newsletter" && <NewsletterModal onClose={() => setModal(null)} />}
+        {modal === "community" && <CommunityModal onClose={() => setModal(null)} />}
+      </AnimatePresence>
     </div>
   );
 }
