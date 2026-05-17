@@ -1,0 +1,168 @@
+export interface Artifact {
+  id: string;
+  name: string;
+  category: 'Core' | 'Primary' | 'Functional' | 'Flow & Balance';
+  origin: string;
+  meaning: string;
+  connection: string;
+  danger: 'LOW' | 'MODERATE' | 'HIGH' | 'EXTREME';
+  clan?: string;
+  clanColor?: string;
+}
+
+export const artifacts: Artifact[] = [
+  {
+    id: "art-1",
+    name: "Aetherion Heart",
+    category: "Core",
+    origin: "Central fragment of the original Aetherion Core, formed before the fracture.",
+    meaning: "Unity — all things are connected even if separated.",
+    connection: "Links all artifacts, enables convergence, stabilizes spatial interaction.",
+    danger: "EXTREME",
+    clan: "Aetherion",
+    clanColor: "violet"
+  },
+  {
+    id: "art-2",
+    name: "Nytheris Heart",
+    category: "Core",
+    origin: "Formed from the void created when the Core fractured.",
+    meaning: "End — everything must decay and return to nothing.",
+    connection: "Accelerates collapse, interacts with Void Shard, destabilizes opposing forces.",
+    danger: "EXTREME",
+    clan: "Nytheris",
+    clanColor: "crimson"
+  },
+  {
+    id: "art-3",
+    name: "Chronis Anchor",
+    category: "Core",
+    origin: "Created when time split during the fracture.",
+    meaning: "Continuity — time must hold events together.",
+    connection: "Stabilizes timelines, prevents paradox collapse, required for controlled convergence.",
+    danger: "EXTREME",
+    clan: "Chronis",
+    clanColor: "teal"
+  },
+  {
+    id: "art-4",
+    name: "Sunstone",
+    category: "Primary",
+    origin: "Fragment of preserved life-force that resisted destruction.",
+    meaning: "Life — existence must be sustained.",
+    connection: "Balances Void Shard, supports Terravon and Aqualis, restores energy.",
+    danger: "HIGH",
+    clan: "Solaryn",
+    clanColor: "gold"
+  },
+  {
+    id: "art-5",
+    name: "Void Shard",
+    category: "Primary",
+    origin: "Condensed pure entropy released during fracture.",
+    meaning: "Destruction — all things must end.",
+    connection: "Opposes Sunstone, amplifies Nytheris Heart, spreads instability.",
+    danger: "EXTREME",
+    clan: "Nytheris",
+    clanColor: "crimson"
+  },
+  {
+    id: "art-6",
+    name: "Chronis Mirror",
+    category: "Primary",
+    origin: "Formed from fractured timelines reflecting alternate outcomes.",
+    meaning: "Awareness — time reveals consequence.",
+    connection: "Works with Chronis Anchor, shows possible futures, predicts convergence outcomes.",
+    danger: "HIGH",
+    clan: "Chronis",
+    clanColor: "teal"
+  },
+  {
+    id: "art-7",
+    name: "Aether Codex",
+    category: "Primary",
+    origin: "Encodes the original laws of Aetherion before fracture.",
+    meaning: "Knowledge — truth exists beyond perception.",
+    connection: "Decodes artifacts, connects all systems conceptually, helps Adrian understand balance.",
+    danger: "HIGH",
+    clan: "Aetherion",
+    clanColor: "violet"
+  },
+  {
+    id: "art-8",
+    name: "Lightning Core",
+    category: "Functional",
+    origin: "Raw energy fragment released during fracture.",
+    meaning: "Power — energy drives action.",
+    connection: "Amplifies artifacts, powers Project AETHER systems, unstable if uncontrolled.",
+    danger: "MODERATE",
+    clan: "Voltrix",
+    clanColor: "yellow"
+  },
+  {
+    id: "art-9",
+    name: "Mirror of Minds",
+    category: "Functional",
+    origin: "Formed from consciousness splitting during fracture.",
+    meaning: "Perception — reality depends on understanding.",
+    connection: "Affects artifact use, influences decisions, interacts with Chronis.",
+    danger: "MODERATE",
+    clan: "Nerathis",
+    clanColor: "purple"
+  },
+  {
+    id: "art-10",
+    name: "Terravon Shield",
+    category: "Functional",
+    origin: "Formed to stabilize physical reality after fracture.",
+    meaning: "Stability — structure must remain.",
+    connection: "Anchors environments, works with Sunstone, resists Void.",
+    danger: "MODERATE",
+    clan: "Terravon",
+    clanColor: "amber"
+  },
+  {
+    id: "art-11",
+    name: "Blade of Eternal Strike",
+    category: "Functional",
+    origin: "Created from conflict between opposing forces.",
+    meaning: "Conflict — progress through action.",
+    connection: "Disrupts stability, interacts with Pyraxis, escalates imbalance.",
+    danger: "HIGH",
+    clan: "Valekar",
+    clanColor: "red"
+  },
+  {
+    id: "art-12",
+    name: "Ember Core",
+    category: "Flow & Balance",
+    origin: "Energy caught in transformation during fracture.",
+    meaning: "Change — nothing remains the same.",
+    connection: "Converts energy states, interacts with Voltrix, drives evolution.",
+    danger: "MODERATE",
+    clan: "Pyraxis",
+    clanColor: "orange"
+  },
+  {
+    id: "art-13",
+    name: "Tide Relic",
+    category: "Flow & Balance",
+    origin: "Formed from stabilizing flow between forces.",
+    meaning: "Adaptation — survival through movement.",
+    connection: "Smooths energy flow, balances Pyraxis, stabilizes transitions.",
+    danger: "MODERATE",
+    clan: "Aqualis",
+    clanColor: "blue"
+  },
+  {
+    id: "art-14",
+    name: "Portal Medallion",
+    category: "Flow & Balance",
+    origin: "Fragment of spatial connection from the original Core.",
+    meaning: "Link — distance is illusion.",
+    connection: "Enables travel between layers, connects Scientific and Magical worlds, interacts with Aetherion Heart.",
+    danger: "HIGH",
+    clan: "Aetherion",
+    clanColor: "violet"
+  }
+];
