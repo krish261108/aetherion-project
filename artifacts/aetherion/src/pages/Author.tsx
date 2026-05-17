@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Pen, BookOpen, Globe, MessageSquare, X, Send, Radio, Users, CheckCircle, Zap, Lock } from "lucide-react";
+import { Pen, BookOpen, Globe, MessageSquare, X, Send, Radio, Users, CheckCircle, Zap, Lock, Signal, Activity } from "lucide-react";
 import SectionHeader from "@/components/SectionHeader";
 
 function NewsletterModal({ onClose }: { onClose: () => void }) {
@@ -131,6 +131,150 @@ function NewsletterModal({ onClose }: { onClose: () => void }) {
                   <motion.span animate={{ opacity: [1, 0] }} transition={{ duration: 0.5, repeat: Infinity }} className="inline-block ml-0.5 w-1.5 h-3 bg-cyan-400 align-middle" />
                 </div>
               </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+const channels = [
+  { id: "books", label: "BOOK RELEASE SIGNAL", desc: "Alerts when a new volume of The Aetherion Cycle is released or announced.", freq: "AIN-001", icon: BookOpen, color: "rgba(0,212,255,1)", colorDim: "rgba(0,212,255,0.15)" },
+  { id: "archive", label: "ARCHIVE UPDATE FEED", desc: "Notifications when new lore, characters, or world entries are added to this archive.", freq: "AIN-002", icon: Activity, color: "rgba(245,158,11,1)", colorDim: "rgba(245,158,11,0.15)" },
+  { id: "world", label: "WORLD EXPANSION BROADCAST", desc: "Updates on spin-offs, visual systems, and new corners of the Aetherion universe.", freq: "AIN-003", icon: Globe, color: "rgba(139,92,246,1)", colorDim: "rgba(139,92,246,0.15)" },
+  { id: "author", label: "AUTHOR TRANSMISSION", desc: "Direct messages and notes from Krish Singh on the creation of the universe.", freq: "AIN-004", icon: Pen, color: "rgba(0,212,180,1)", colorDim: "rgba(0,212,180,0.15)" },
+];
+
+function FollowUpdatesModal({ onClose }: { onClose: () => void }) {
+  const [locked, setLocked] = useState<Set<string>>(new Set());
+  const [allLocked, setAllLocked] = useState(false);
+
+  const toggle = (id: string) => {
+    setLocked((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      if (next.size === channels.length) setAllLocked(true);
+      return next;
+    });
+  };
+
+  const lockAll = () => {
+    setLocked(new Set(channels.map((c) => c.id)));
+    setAllLocked(true);
+  };
+
+  return (
+    <motion.div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ background: "rgba(3,7,18,0.94)", backdropFilter: "blur(20px)" }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+    >
+      <motion.div
+        className="w-full max-w-md relative overflow-hidden rounded-lg"
+        style={{ background: "rgba(4,8,22,0.99)", border: "1px solid rgba(245,158,11,0.25)", boxShadow: "0 0 80px rgba(245,158,11,0.08)" }}
+        initial={{ scale: 0.85, opacity: 0, y: 30 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.85, opacity: 0 }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="h-1 w-full" style={{ background: "linear-gradient(90deg, transparent, rgba(245,158,11,0.8), rgba(0,212,255,0.5), transparent)" }} />
+
+        <div className="p-6 relative z-10">
+          <button className="absolute top-4 right-4 text-slate-600 hover:text-white transition-colors" onClick={onClose}>
+            <X size={16} />
+          </button>
+
+          <div className="flex items-center gap-2 mb-1">
+            <Signal size={14} className="text-amber-400" />
+            <span className="text-xs font-mono text-amber-500/70 tracking-widest">AETHERION SIGNAL NETWORK</span>
+          </div>
+          <h2 className="text-xl font-bold text-white mb-1" style={{ fontFamily: "'Orbitron', sans-serif" }}>
+            Follow Updates
+          </h2>
+          <p className="text-xs text-slate-500 font-mono mb-5">
+            Lock into the frequencies you want to track. Each channel broadcasts separately.
+          </p>
+
+          <div className="space-y-2 mb-4">
+            {channels.map((ch) => {
+              const isLocked = locked.has(ch.id);
+              return (
+                <motion.button
+                  key={ch.id}
+                  onClick={() => toggle(ch.id)}
+                  className="w-full text-left p-3 rounded flex items-start gap-3 transition-all"
+                  style={{
+                    background: isLocked ? ch.colorDim : "rgba(255,255,255,0.02)",
+                    border: `1px solid ${isLocked ? ch.color.replace("1)", "0.4)") : "rgba(255,255,255,0.07)"}`,
+                  }}
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.98 }}
+                  data-testid={`channel-${ch.id}`}
+                >
+                  <div
+                    className="mt-0.5 w-6 h-6 rounded shrink-0 flex items-center justify-center"
+                    style={{ background: isLocked ? ch.colorDim : "transparent", border: `1px solid ${isLocked ? ch.color.replace("1)", "0.5)") : "rgba(255,255,255,0.1)"}` }}
+                  >
+                    {isLocked
+                      ? <CheckCircle size={12} style={{ color: ch.color }} />
+                      : <ch.icon size={11} className="text-slate-600" />
+                    }
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <span className="text-xs font-mono font-bold" style={{ color: isLocked ? ch.color : "rgba(148,163,184,0.7)" }}>
+                        {ch.label}
+                      </span>
+                      {isLocked && (
+                        <motion.span
+                          initial={{ opacity: 0, scale: 0.7 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          className="text-[9px] font-mono px-1.5 py-0.5 rounded"
+                          style={{ background: ch.colorDim, color: ch.color }}
+                        >
+                          LOCKED IN
+                        </motion.span>
+                      )}
+                    </div>
+                    <div className="text-[10px] text-slate-600 font-mono">{ch.freq} &nbsp;·&nbsp; {ch.desc}</div>
+                  </div>
+                </motion.button>
+              );
+            })}
+          </div>
+
+          <AnimatePresence>
+            {allLocked ? (
+              <motion.div
+                key="all-locked"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="p-3 rounded text-center"
+                style={{ background: "rgba(245,158,11,0.06)", border: "1px solid rgba(245,158,11,0.2)" }}
+              >
+                <div className="flex items-center justify-center gap-2 mb-1">
+                  <motion.div animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.2, repeat: Infinity }}>
+                    <Signal size={12} className="text-amber-400" />
+                  </motion.div>
+                  <span className="text-xs font-mono text-amber-400 tracking-widest">ALL FREQUENCIES ACTIVE</span>
+                </div>
+                <div className="text-[10px] text-slate-600 font-mono">Full-spectrum monitoring engaged. The archive will find you.</div>
+              </motion.div>
+            ) : (
+              <motion.button
+                key="lock-all"
+                onClick={lockAll}
+                className="w-full py-2 text-xs font-mono rounded border transition-all"
+                style={{ color: "rgba(245,158,11,0.7)", borderColor: "rgba(245,158,11,0.2)", background: "rgba(245,158,11,0.04)" }}
+                whileHover={{ scale: 1.02, boxShadow: "0 0 20px rgba(245,158,11,0.15)" }}
+                data-testid="button-lock-all-frequencies"
+              >
+                Lock All Frequencies
+              </motion.button>
             )}
           </AnimatePresence>
         </div>
@@ -330,7 +474,7 @@ function CommunityModal({ onClose }: { onClose: () => void }) {
 }
 
 export default function Author() {
-  const [modal, setModal] = useState<null | "newsletter" | "community">(null);
+  const [modal, setModal] = useState<null | "newsletter" | "community" | "follow">(null);
 
   return (
     <div className="min-h-screen pt-24 pb-20 px-4 relative z-10">
@@ -429,10 +573,18 @@ export default function Author() {
           </motion.a>
 
           <motion.button
-            className="px-4 py-2 text-xs font-mono rounded border text-slate-400 border-slate-700 hover:text-slate-300 transition-all cursor-pointer"
-            whileHover={{ scale: 1.04 }}
+            onClick={() => setModal("follow")}
+            className="relative px-4 py-2 text-xs font-mono rounded border overflow-hidden transition-all cursor-pointer"
+            style={{ color: "rgba(245,158,11,0.8)", borderColor: "rgba(245,158,11,0.3)", background: "rgba(245,158,11,0.05)" }}
+            whileHover={{ scale: 1.04, boxShadow: "0 0 20px rgba(245,158,11,0.2)" }}
             data-testid="button-author-follow-updates"
           >
+            <motion.span
+              className="absolute inset-0 opacity-0"
+              style={{ background: "linear-gradient(90deg, transparent, rgba(245,158,11,0.1), transparent)" }}
+              animate={{ opacity: [0, 1, 0], x: ["-100%", "100%"] }}
+              transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 0.8 }}
+            />
             Follow Updates
           </motion.button>
 
@@ -471,6 +623,7 @@ export default function Author() {
       </div>
 
       <AnimatePresence>
+        {modal === "follow" && <FollowUpdatesModal onClose={() => setModal(null)} />}
         {modal === "newsletter" && <NewsletterModal onClose={() => setModal(null)} />}
         {modal === "community" && <CommunityModal onClose={() => setModal(null)} />}
       </AnimatePresence>
