@@ -131,15 +131,21 @@ export default function Author() {
 
         {/* Social placeholders */}
         <div className="mt-8 flex flex-wrap gap-3 justify-center">
-          {["Contact the Author", "Follow Updates", "Universe Newsletter", "Community"].map((label) => (
-            <motion.button
+          {[
+            { label: "Contact the Author", href: "mailto:singh.krish261108@gmail.com" },
+            { label: "Follow Updates", href: null },
+            { label: "Universe Newsletter", href: null },
+            { label: "Community", href: null },
+          ].map(({ label, href }) => (
+            <motion.a
               key={label}
-              className="px-4 py-2 text-xs font-mono rounded border text-slate-500 border-slate-800 hover:text-cyan-400 hover:border-cyan-900 transition-all"
+              href={href ?? undefined}
+              className="px-4 py-2 text-xs font-mono rounded border text-slate-500 border-slate-800 hover:text-cyan-400 hover:border-cyan-900 transition-all cursor-pointer"
               whileHover={{ scale: 1.04 }}
               data-testid={`button-author-${label.toLowerCase().replace(/\s/g, "-")}`}
             >
               {label}
-            </motion.button>
+            </motion.a>
           ))}
         </div>
       </div>
