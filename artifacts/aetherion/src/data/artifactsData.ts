@@ -8,6 +8,7 @@ export interface Artifact {
   danger: 'LOW' | 'MODERATE' | 'HIGH' | 'EXTREME';
   clan?: string;
   clanColor?: string;
+  image: string;
 }
 
 export const artifacts: Artifact[] = [
@@ -20,7 +21,8 @@ export const artifacts: Artifact[] = [
     connection: "Links all artifacts, enables convergence, stabilizes spatial interaction.",
     danger: "EXTREME",
     clan: "Aetherion",
-    clanColor: "violet"
+    clanColor: "violet",
+    image: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=600&q=80",
   },
   {
     id: "art-2",
@@ -31,7 +33,8 @@ export const artifacts: Artifact[] = [
     connection: "Accelerates collapse, interacts with Void Shard, destabilizes opposing forces.",
     danger: "EXTREME",
     clan: "Nytheris",
-    clanColor: "crimson"
+    clanColor: "crimson",
+    image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&q=80",
   },
   {
     id: "art-3",
@@ -42,7 +45,8 @@ export const artifacts: Artifact[] = [
     connection: "Stabilizes timelines, prevents paradox collapse, required for controlled convergence.",
     danger: "EXTREME",
     clan: "Chronis",
-    clanColor: "teal"
+    clanColor: "teal",
+    image: "https://images.unsplash.com/photo-1509475826633-fed577a2c71b?w=600&q=80",
   },
   {
     id: "art-4",
@@ -53,7 +57,8 @@ export const artifacts: Artifact[] = [
     connection: "Balances Void Shard, supports Terravon and Aqualis, restores energy.",
     danger: "HIGH",
     clan: "Solaryn",
-    clanColor: "gold"
+    clanColor: "gold",
+    image: "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?w=600&q=80",
   },
   {
     id: "art-5",
@@ -64,7 +69,8 @@ export const artifacts: Artifact[] = [
     connection: "Opposes Sunstone, amplifies Nytheris Heart, spreads instability.",
     danger: "EXTREME",
     clan: "Nytheris",
-    clanColor: "crimson"
+    clanColor: "crimson",
+    image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=600&q=80",
   },
   {
     id: "art-6",
@@ -75,7 +81,8 @@ export const artifacts: Artifact[] = [
     connection: "Works with Chronis Anchor, shows possible futures, predicts convergence outcomes.",
     danger: "HIGH",
     clan: "Chronis",
-    clanColor: "teal"
+    clanColor: "teal",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80",
   },
   {
     id: "art-7",
@@ -86,7 +93,8 @@ export const artifacts: Artifact[] = [
     connection: "Decodes artifacts, connects all systems conceptually, helps Adrian understand balance.",
     danger: "HIGH",
     clan: "Aetherion",
-    clanColor: "violet"
+    clanColor: "violet",
+    image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&q=80",
   },
   {
     id: "art-8",
@@ -97,7 +105,8 @@ export const artifacts: Artifact[] = [
     connection: "Amplifies artifacts, powers Project AETHER systems, unstable if uncontrolled.",
     danger: "MODERATE",
     clan: "Voltrix",
-    clanColor: "yellow"
+    clanColor: "yellow",
+    image: "https://images.unsplash.com/photo-1527482797697-8795b05a13fe?w=600&q=80",
   },
   {
     id: "art-9",
@@ -108,7 +117,8 @@ export const artifacts: Artifact[] = [
     connection: "Affects artifact use, influences decisions, interacts with Chronis.",
     danger: "MODERATE",
     clan: "Nerathis",
-    clanColor: "purple"
+    clanColor: "purple",
+    image: "https://images.unsplash.com/photo-1520694478166-daaaaec95b69?w=600&q=80",
   },
   {
     id: "art-10",
@@ -119,7 +129,8 @@ export const artifacts: Artifact[] = [
     connection: "Anchors environments, works with Sunstone, resists Void.",
     danger: "MODERATE",
     clan: "Terravon",
-    clanColor: "amber"
+    clanColor: "amber",
+    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80",
   },
   {
     id: "art-11",
@@ -130,7 +141,8 @@ export const artifacts: Artifact[] = [
     connection: "Disrupts stability, interacts with Pyraxis, escalates imbalance.",
     danger: "HIGH",
     clan: "Valekar",
-    clanColor: "red"
+    clanColor: "red",
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80",
   },
   {
     id: "art-12",
@@ -141,7 +153,8 @@ export const artifacts: Artifact[] = [
     connection: "Converts energy states, interacts with Voltrix, drives evolution.",
     danger: "MODERATE",
     clan: "Pyraxis",
-    clanColor: "orange"
+    clanColor: "orange",
+    image: "https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=600&q=80",
   },
   {
     id: "art-13",
@@ -152,7 +165,8 @@ export const artifacts: Artifact[] = [
     connection: "Smooths energy flow, balances Pyraxis, stabilizes transitions.",
     danger: "MODERATE",
     clan: "Aqualis",
-    clanColor: "blue"
+    clanColor: "blue",
+    image: "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=600&q=80",
   },
   {
     id: "art-14",
@@ -163,6 +177,7 @@ export const artifacts: Artifact[] = [
     connection: "Enables travel between layers, connects Scientific and Magical worlds, interacts with Aetherion Heart.",
     danger: "HIGH",
     clan: "Aetherion",
-    clanColor: "violet"
-  }
+    clanColor: "violet",
+    image: "https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=600&q=80",
+  },
 ];
