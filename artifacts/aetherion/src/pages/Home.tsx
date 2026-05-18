@@ -18,10 +18,10 @@ const stats = [
 ];
 
 const navCards = [
-  { title: "Books Archive", desc: "Seven core books + spin-offs", href: "/books", icon: BookOpen, color: "cyan" },
-  { title: "Characters", desc: "Complete character database", href: "/characters", icon: Users, color: "violet" },
-  { title: "Clan System", desc: "10 clans, 10 philosophies", href: "/clans", icon: Shield, color: "gold" },
-  { title: "Project AETHER", desc: "Classified science files", href: "/project-aether", icon: Zap, color: "red" },
+  { title: "Books Archive", desc: "Seven core books + spin-offs", href: "/books", icon: BookOpen, color: "cyan", image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80" },
+  { title: "Characters", desc: "Complete character database", href: "/characters", icon: Users, color: "violet", image: "https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=600&q=80" },
+  { title: "Clan System", desc: "10 clans, 10 philosophies", href: "/clans", icon: Shield, color: "gold", image: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=600&q=80" },
+  { title: "Project AETHER", desc: "Classified science files", href: "/project-aether", icon: Zap, color: "red", image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80" },
 ];
 
 const colorMap: Record<string, string> = {
@@ -254,33 +254,55 @@ export default function Home() {
               {navCards.map((card, i) => (
                 <Link key={card.href} href={card.href}>
                   <motion.div
-                    className="p-6 rounded-lg cursor-pointer h-full"
-                    style={{
-                      background: colorMap[card.color],
-                      border: `1px solid ${borderMap[card.color]}`,
-                      backdropFilter: "blur(10px)",
-                    }}
+                    className="rounded-lg cursor-pointer overflow-hidden"
+                    style={{ border: `1px solid ${borderMap[card.color]}` }}
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.1 }}
                     whileHover={{
-                      scale: 1.03,
-                      boxShadow: `0 0 30px ${borderMap[card.color]}`,
+                      scale: 1.04,
+                      boxShadow: `0 0 36px ${borderMap[card.color]}`,
                     }}
                     data-testid={`card-nav-${card.title.toLowerCase().replace(/\s/g, "-")}`}
                   >
-                    <card.icon
-                      size={28}
-                      className={`mb-4 ${card.color === "cyan" ? "text-cyan-400" : card.color === "violet" ? "text-violet-400" : card.color === "gold" ? "text-amber-400" : "text-red-400"}`}
-                    />
-                    <h3
-                      className="font-bold text-white mb-2 text-sm tracking-wide"
-                      style={{ fontFamily: "'Orbitron', sans-serif" }}
+                    {/* Image header */}
+                    <div className="relative h-32 overflow-hidden">
+                      <img
+                        src={card.image}
+                        alt={card.title}
+                        className="w-full h-full object-cover"
+                        style={{ filter: "brightness(0.45) saturate(1.3)" }}
+                      />
+                      <div
+                        className="absolute inset-0"
+                        style={{ background: `linear-gradient(to bottom, transparent 30%, rgba(10,15,40,0.97) 100%)` }}
+                      />
+                      <card.icon
+                        size={24}
+                        className={`absolute top-3 left-3 ${card.color === "cyan" ? "text-cyan-400" : card.color === "violet" ? "text-violet-400" : card.color === "gold" ? "text-amber-400" : "text-red-400"}`}
+                        style={{ filter: `drop-shadow(0 0 6px currentColor)` }}
+                      />
+                    </div>
+
+                    {/* Text content */}
+                    <div
+                      className="p-4"
+                      style={{ background: colorMap[card.color], backdropFilter: "blur(10px)" }}
                     >
-                      {card.title}
-                    </h3>
-                    <p className="text-slate-400 text-xs">{card.desc}</p>
+                      <h3
+                        className="font-bold text-white mb-1 text-sm tracking-wide"
+                        style={{ fontFamily: "'Orbitron', sans-serif" }}
+                      >
+                        {card.title}
+                      </h3>
+                      <p className="text-slate-400 text-xs">{card.desc}</p>
+                      <div
+                        className={`mt-3 text-xs font-mono ${card.color === "cyan" ? "text-cyan-500" : card.color === "violet" ? "text-violet-500" : card.color === "gold" ? "text-amber-500" : "text-red-500"}`}
+                      >
+                        → EXPLORE
+                      </div>
+                    </div>
                   </motion.div>
                 </Link>
               ))}

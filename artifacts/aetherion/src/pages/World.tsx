@@ -78,39 +78,47 @@ export default function World() {
               return (
                 <motion.div
                   key={layer.id}
-                  className="p-5 rounded"
-                  style={{ background: col.bg, border: `1px solid ${col.border}` }}
+                  className="rounded-lg overflow-hidden"
+                  style={{ border: `1px solid ${col.border}` }}
                   initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.08 }}
-                  whileHover={{ boxShadow: `0 0 25px ${col.glow}` }}
+                  whileHover={{ boxShadow: `0 0 30px ${col.glow}` }}
                 >
-                  <div className="flex items-start gap-4">
-                    <div
-                      className={`text-3xl font-mono shrink-0 ${col.text}`}
-                      style={{ fontFamily: "'Orbitron', sans-serif", opacity: 0.6 }}
-                    >
-                      {layer.icon}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex flex-wrap items-center gap-3 mb-2">
-                        <div className={`text-xs font-mono ${col.text}`}>LAYER {layer.number}</div>
-                        <div className="text-xs text-slate-600 font-mono">{layer.subtitle}</div>
+                  {/* Image strip */}
+                  <div className="relative h-40 overflow-hidden">
+                    <img
+                      src={layer.image}
+                      alt={layer.name}
+                      className="w-full h-full object-cover"
+                      style={{ filter: "brightness(0.45) saturate(1.4)" }}
+                    />
+                    <div className="absolute inset-0" style={{ background: `linear-gradient(to right, rgba(10,15,40,0.95) 0%, rgba(10,15,40,0.5) 50%, rgba(10,15,40,0.3) 100%)` }} />
+                    <div className="absolute inset-0 flex items-center px-6 gap-5">
+                      <div className={`text-5xl font-mono shrink-0 ${col.text}`} style={{ fontFamily: "'Orbitron', sans-serif", opacity: 0.85 }}>
+                        {layer.number}
                       </div>
-                      <h3 className="text-lg font-bold text-white mb-2" style={{ fontFamily: "'Orbitron', sans-serif" }}>
-                        {layer.name}
-                      </h3>
-                      <p className="text-sm text-slate-300 mb-3">{layer.description}</p>
-                      <div className="flex flex-wrap gap-2 mb-3">
-                        {layer.characteristics.map((c) => (
-                          <span key={c} className="text-xs px-2 py-0.5 rounded font-mono" style={{ background: col.bg, border: `1px solid ${col.border}`, color: "rgba(200,220,240,0.6)" }}>
-                            {c}
-                          </span>
-                        ))}
+                      <div>
+                        <div className={`text-xs font-mono mb-1 ${col.text}`} style={{ opacity: 0.7 }}>LAYER {layer.number} — {layer.subtitle}</div>
+                        <h3 className="text-xl font-bold text-white" style={{ fontFamily: "'Orbitron', sans-serif" }}>
+                          {layer.name}
+                        </h3>
                       </div>
-                      <p className="text-xs text-slate-500 italic">{layer.role}</p>
                     </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-5" style={{ background: col.bg }}>
+                    <p className="text-sm text-slate-300 mb-3">{layer.description}</p>
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {layer.characteristics.map((c) => (
+                        <span key={c} className="text-xs px-2 py-0.5 rounded font-mono" style={{ background: "rgba(0,0,0,0.3)", border: `1px solid ${col.border}`, color: "rgba(200,220,240,0.6)" }}>
+                          {c}
+                        </span>
+                      ))}
+                    </div>
+                    <p className="text-xs text-slate-500 italic">{layer.role}</p>
                   </div>
                 </motion.div>
               );
