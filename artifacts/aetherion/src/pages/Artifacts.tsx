@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Gem, AlertTriangle, Skull } from "lucide-react";
+import { X, Gem, Skull } from "lucide-react";
 import { artifacts, Artifact } from "@/data/artifactsData";
 import SectionHeader from "@/components/SectionHeader";
 
@@ -41,7 +41,7 @@ export default function Artifacts() {
           accent="ARTIFACT RECORDS"
         />
 
-        {/* Filters */}
+        {/* Category filters */}
         <div className="flex flex-wrap gap-3 justify-center mb-4">
           {categories.map((c) => (
             <button
@@ -58,6 +58,8 @@ export default function Artifacts() {
             </button>
           ))}
         </div>
+
+        {/* Danger filters */}
         <div className="flex flex-wrap gap-3 justify-center mb-10">
           {dangers.map((d) => (
             <button
@@ -75,6 +77,7 @@ export default function Artifacts() {
           ))}
         </div>
 
+        {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {filtered.map((art, i) => {
             const dc = dangerConfig[art.danger];
@@ -83,7 +86,11 @@ export default function Artifacts() {
               <motion.div
                 key={art.id}
                 className="rounded-lg cursor-pointer overflow-hidden"
-                style={{ background: "rgba(10,15,40,0.7)", border: `1px solid ${cc.border}`, backdropFilter: "blur(10px)" }}
+                style={{
+                  background: "rgba(10,15,40,0.7)",
+                  border: `1px solid ${cc.border}`,
+                  backdropFilter: "blur(10px)",
+                }}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -100,7 +107,10 @@ export default function Artifacts() {
                     className="w-full h-full object-cover"
                     style={{ filter: "brightness(0.55) saturate(1.3)" }}
                   />
-                  <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, transparent 40%, rgba(10,15,40,0.95) 100%)` }} />
+                  <div
+                    className="absolute inset-0"
+                    style={{ background: "linear-gradient(to bottom, transparent 40%, rgba(10,15,40,0.95) 100%)" }}
+                  />
                   <div
                     className={`absolute top-3 right-3 text-xs font-mono px-2 py-0.5 border rounded ${dc.color}`}
                     style={{ borderColor: dc.border, background: "rgba(3,7,18,0.82)", backdropFilter: "blur(8px)" }}
@@ -116,6 +126,7 @@ export default function Artifacts() {
                   </div>
                 </div>
 
+                {/* Card body */}
                 <div className="p-4">
                   <h3
                     className="text-sm font-bold text-white mb-1"
@@ -135,6 +146,7 @@ export default function Artifacts() {
         </div>
       </div>
 
+      {/* Detail modal */}
       <AnimatePresence>
         {selected && (
           <motion.div
@@ -165,14 +177,21 @@ export default function Artifacts() {
                   className="w-full h-full object-cover"
                   style={{ filter: "brightness(0.5) saturate(1.4)" }}
                 />
-                <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(3,7,18,0.2) 0%, rgba(10,15,40,0.98) 100%)" }} />
-                <button className="absolute top-4 right-4 text-slate-400 hover:text-white" style={{ background: "rgba(3,7,18,0.7)", borderRadius: "50%", padding: 4, backdropFilter: "blur(8px)" }} onClick={() => setSelected(null)}>
-                  <X size={16} />
+                <div
+                  className="absolute inset-0"
+                  style={{ background: "linear-gradient(to bottom, rgba(3,7,18,0.15) 0%, rgba(10,15,40,0.98) 100%)" }}
+                />
+                <button
+                  className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors"
+                  style={{ background: "rgba(3,7,18,0.7)", borderRadius: "50%", padding: 6, backdropFilter: "blur(8px)" }}
+                  onClick={() => setSelected(null)}
+                >
+                  <X size={14} />
                 </button>
                 <div className="absolute bottom-4 left-5 flex items-center gap-3">
                   <Gem size={22} className={dangerConfig[selected.danger].color} />
                   <div>
-                    <div className="text-xs font-mono text-slate-400">{selected.category} Artifact</div>
+                    <div className="text-xs font-mono text-slate-400 mb-0.5">{selected.category} Artifact</div>
                     <h2 className="text-xl font-bold text-white" style={{ fontFamily: "'Orbitron', sans-serif" }}>
                       {selected.name}
                     </h2>
@@ -180,35 +199,43 @@ export default function Artifacts() {
                 </div>
               </div>
 
+              {/* Modal body */}
               <div className="p-6">
-              <div className="flex items-center gap-3 mb-4">
-              </div>
-              <div className="space-y-3">
-                <div>
-                  <div className="text-xs font-mono text-slate-500 mb-1">ORIGIN</div>
-                  <p className="text-slate-300 text-sm">{selected.origin}</p>
-                </div>
-                <div>
-                  <div className="text-xs font-mono text-slate-500 mb-1">MEANING</div>
-                  <p className="text-slate-300 text-sm italic">{selected.meaning}</p>
-                </div>
-                <div>
-                  <div className="text-xs font-mono text-slate-500 mb-1">SYSTEM CONNECTION</div>
-                  <p className="text-slate-300 text-sm">{selected.connection}</p>
-                </div>
-                <div className="flex items-center gap-4 pt-3 border-t border-slate-800">
+                <div className="space-y-4">
                   <div>
-                    <div className="text-xs font-mono text-slate-600 mb-1">DANGER LEVEL</div>
-                    <div className={`text-xs font-mono px-2 py-0.5 border rounded ${dangerConfig[selected.danger].color}`} style={{ borderColor: dangerConfig[selected.danger].border }}>
-                      {selected.danger}
+                    <div className="text-xs font-mono text-slate-500 mb-1">ORIGIN</div>
+                    <p className="text-slate-300 text-sm leading-relaxed">{selected.origin}</p>
+                  </div>
+                  <div>
+                    <div className="text-xs font-mono text-slate-500 mb-1">MEANING</div>
+                    <p className="text-slate-300 text-sm italic leading-relaxed">{selected.meaning}</p>
+                  </div>
+                  <div>
+                    <div className="text-xs font-mono text-slate-500 mb-1">SYSTEM CONNECTION</div>
+                    <p className="text-slate-300 text-sm leading-relaxed">{selected.connection}</p>
+                  </div>
+                  <div className="flex items-center gap-6 pt-3 border-t border-slate-800">
+                    <div>
+                      <div className="text-xs font-mono text-slate-600 mb-1">DANGER LEVEL</div>
+                      <div
+                        className={`text-xs font-mono px-2 py-0.5 border rounded ${dangerConfig[selected.danger].color}`}
+                        style={{ borderColor: dangerConfig[selected.danger].border, background: dangerConfig[selected.danger].bg }}
+                      >
+                        {selected.danger === "EXTREME" && <Skull size={8} className="inline mr-1" />}
+                        {selected.danger}
+                      </div>
+                    </div>
+                    {selected.clan && (
+                      <div>
+                        <div className="text-xs font-mono text-slate-600 mb-1">CLAN</div>
+                        <div className="text-xs text-slate-300 font-mono">{selected.clan}</div>
+                      </div>
+                    )}
+                    <div>
+                      <div className="text-xs font-mono text-slate-600 mb-1">CATEGORY</div>
+                      <div className="text-xs text-slate-400 font-mono">{selected.category}</div>
                     </div>
                   </div>
-                  {selected.clan && (
-                    <div>
-                      <div className="text-xs font-mono text-slate-600 mb-1">CLAN</div>
-                      <div className="text-xs text-slate-300 font-mono">{selected.clan}</div>
-                    </div>
-                  )}
                 </div>
               </div>
             </motion.div>
