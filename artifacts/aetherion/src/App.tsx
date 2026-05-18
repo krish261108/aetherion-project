@@ -4,6 +4,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import StarfieldBackground from "@/components/StarfieldBackground";
+import AmbientAudio from "@/components/AmbientAudio";
+import ClickEffect from "@/components/ClickEffect";
 import Home from "@/pages/Home";
 import Books from "@/pages/Books";
 import Characters from "@/pages/Characters";
@@ -53,6 +55,8 @@ function Layout() {
       <div className="relative z-10">
         <Footer />
       </div>
+      <AmbientAudio />
+      <ClickEffect />
     </div>
   );
 }
