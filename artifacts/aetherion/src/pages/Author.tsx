@@ -372,7 +372,7 @@ function CommunityModal({ onClose }: { onClose: () => void }) {
                     >
                       <div className="flex items-center gap-2 mb-1.5">
                         <div className="w-5 h-5 rounded-full flex items-center justify-center" style={{ background: "rgba(139,92,246,0.2)", border: "1px solid rgba(139,92,246,0.3)" }}>
-                          <Lock size={8} className="text-violet-400" />
+                          <Users size={8} className="text-violet-400" />
                         </div>
                         <span className="text-xs font-mono text-violet-300">{post.user}</span>
                         <span className={`text-xs font-mono ${clanColors[post.clan] ?? "text-slate-500"}`}>[{post.clan}]</span>
