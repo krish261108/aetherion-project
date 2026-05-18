@@ -82,42 +82,53 @@ export default function Artifacts() {
             return (
               <motion.div
                 key={art.id}
-                className="p-5 rounded-lg cursor-pointer"
+                className="rounded-lg cursor-pointer overflow-hidden"
                 style={{ background: "rgba(10,15,40,0.7)", border: `1px solid ${cc.border}`, backdropFilter: "blur(10px)" }}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05 }}
-                whileHover={{ scale: 1.02, boxShadow: `0 0 25px ${cc.glow}` }}
+                whileHover={{ scale: 1.02, boxShadow: `0 0 30px ${cc.glow}` }}
                 onClick={() => setSelected(art)}
                 data-testid={`card-artifact-${art.id}`}
               >
-                <div className="flex items-start justify-between mb-3">
+                {/* Image header */}
+                <div className="relative h-36 overflow-hidden">
+                  <img
+                    src={art.image}
+                    alt={art.name}
+                    className="w-full h-full object-cover"
+                    style={{ filter: "brightness(0.55) saturate(1.3)" }}
+                  />
+                  <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, transparent 40%, rgba(10,15,40,0.95) 100%)` }} />
                   <div
-                    className="w-10 h-10 rounded-lg flex items-center justify-center"
-                    style={{ background: dc.bg, border: `1px solid ${dc.border}` }}
-                  >
-                    <Gem size={18} className={dc.color} />
-                  </div>
-                  <div
-                    className={`text-xs font-mono px-2 py-0.5 border rounded ${dc.color}`}
-                    style={{ borderColor: dc.border, background: dc.bg }}
+                    className={`absolute top-3 right-3 text-xs font-mono px-2 py-0.5 border rounded ${dc.color}`}
+                    style={{ borderColor: dc.border, background: "rgba(3,7,18,0.82)", backdropFilter: "blur(8px)" }}
                   >
                     {art.danger === "EXTREME" && <Skull size={8} className="inline mr-1" />}
                     {art.danger}
                   </div>
+                  <div
+                    className="absolute bottom-3 left-3 w-8 h-8 rounded-md flex items-center justify-center"
+                    style={{ background: dc.bg, border: `1px solid ${dc.border}` }}
+                  >
+                    <Gem size={14} className={dc.color} />
+                  </div>
                 </div>
-                <h3
-                  className="text-sm font-bold text-white mb-1"
-                  style={{ fontFamily: "'Orbitron', sans-serif" }}
-                >
-                  {art.name}
-                </h3>
-                <div className="text-xs text-slate-500 font-mono mb-2">{art.category}</div>
-                <p className="text-xs text-slate-400 leading-relaxed line-clamp-2">{art.meaning}</p>
-                {art.clan && (
-                  <div className="mt-3 text-xs text-slate-600 font-mono">Clan: {art.clan}</div>
-                )}
+
+                <div className="p-4">
+                  <h3
+                    className="text-sm font-bold text-white mb-1"
+                    style={{ fontFamily: "'Orbitron', sans-serif" }}
+                  >
+                    {art.name}
+                  </h3>
+                  <div className="text-xs text-slate-500 font-mono mb-2">{art.category}</div>
+                  <p className="text-xs text-slate-400 leading-relaxed line-clamp-2">{art.meaning}</p>
+                  {art.clan && (
+                    <div className="mt-3 text-xs text-slate-600 font-mono">Clan: {art.clan}</div>
+                  )}
+                </div>
               </motion.div>
             );
           })}
@@ -135,7 +146,7 @@ export default function Artifacts() {
             onClick={() => setSelected(null)}
           >
             <motion.div
-              className="w-full max-w-lg p-6 rounded-lg relative"
+              className="w-full max-w-lg rounded-lg relative overflow-hidden"
               style={{
                 background: "rgba(10,15,40,0.97)",
                 border: `1px solid ${categoryConfig[selected.category].border}`,
@@ -146,17 +157,31 @@ export default function Artifacts() {
               exit={{ scale: 0.85, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <button className="absolute top-4 right-4 text-slate-500 hover:text-white" onClick={() => setSelected(null)}>
-                <X size={18} />
-              </button>
-              <div className="flex items-center gap-3 mb-4">
-                <Gem size={24} className={dangerConfig[selected.danger].color} />
-                <div>
-                  <div className="text-xs font-mono text-slate-500">{selected.category} Artifact</div>
-                  <h2 className="text-xl font-bold text-white" style={{ fontFamily: "'Orbitron', sans-serif" }}>
-                    {selected.name}
-                  </h2>
+              {/* Modal image header */}
+              <div className="relative h-44 overflow-hidden">
+                <img
+                  src={selected.image}
+                  alt={selected.name}
+                  className="w-full h-full object-cover"
+                  style={{ filter: "brightness(0.5) saturate(1.4)" }}
+                />
+                <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(3,7,18,0.2) 0%, rgba(10,15,40,0.98) 100%)" }} />
+                <button className="absolute top-4 right-4 text-slate-400 hover:text-white" style={{ background: "rgba(3,7,18,0.7)", borderRadius: "50%", padding: 4, backdropFilter: "blur(8px)" }} onClick={() => setSelected(null)}>
+                  <X size={16} />
+                </button>
+                <div className="absolute bottom-4 left-5 flex items-center gap-3">
+                  <Gem size={22} className={dangerConfig[selected.danger].color} />
+                  <div>
+                    <div className="text-xs font-mono text-slate-400">{selected.category} Artifact</div>
+                    <h2 className="text-xl font-bold text-white" style={{ fontFamily: "'Orbitron', sans-serif" }}>
+                      {selected.name}
+                    </h2>
+                  </div>
                 </div>
+              </div>
+
+              <div className="p-6">
+              <div className="flex items-center gap-3 mb-4">
               </div>
               <div className="space-y-3">
                 <div>

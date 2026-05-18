@@ -9,6 +9,7 @@ export interface Layer {
   veilState?: string;
   color: string;
   icon: string;
+  image: string;
 }
 
 export const layers: Layer[] = [
@@ -22,7 +23,8 @@ export const layers: Layer[] = [
     role: "Starting point for Adrian. Location of Project AETHER. Represents control and incomplete understanding.",
     veilState: "Boundaries enforced by Veil",
     color: "blue",
-    icon: "⚗"
+    icon: "⚗",
+    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=700&q=80",
   },
   {
     id: "layer-2",
@@ -34,50 +36,55 @@ export const layers: Layer[] = [
     role: "Introduces the clan system and natural balance. Liora operates here.",
     veilState: "Separated from Scientific World by the Veil",
     color: "violet",
-    icon: "✦"
+    icon: "✦",
+    image: "https://images.unsplash.com/photo-1475274047050-1d0c0975de51?w=700&q=80",
   },
   {
     id: "layer-3",
     number: 3,
-    name: "Celestial Planes",
-    subtitle: "Origin Layer",
-    description: "A higher-level reality closer to the original Aetherion Core. Less physical, more abstract and energy-based.",
-    characteristics: ["Abstract", "Energy-based", "Sacred knowledge"],
-    role: "Site of major revelations. Adrian and Liora discover the origin truth here in Book IV.",
-    veilState: "Accessible only through alignment or convergence",
+    name: "Aetherion Layer",
+    subtitle: "Core Layer",
+    description: "The layer where Aetherion itself exists as a physical force. Reality is fluid and energy is directly manipulable.",
+    characteristics: ["Pure Aetherion energy", "Reality is malleable", "Convergence point"],
+    role: "The battleground for the true conflict. Where the fracture must be healed or will be made permanent.",
+    veilState: "Accessible only through deep Aetherion connection",
     color: "gold",
-    icon: "◈"
+    icon: "◈",
+    image: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=700&q=80",
   },
   {
     id: "layer-4",
     number: 4,
-    name: "Forbidden Dimensions",
-    subtitle: "Broken Layer",
-    description: "Corrupted parts of reality created by imbalance or failed interference. Void energy dominates here.",
-    characteristics: ["Unstable", "Hostile", "Unpredictable"],
-    role: "Source of Void spread and Voidborn entities. Consequence of imbalance and danger.",
-    veilState: "Veil fractured — contains hostile energy",
+    name: "Void Layer",
+    subtitle: "Destruction Layer",
+    description: "The layer of pure entropy. Where things go when they are erased from existence. The Nytheris domain.",
+    characteristics: ["Entropy-dominant", "Erased existence", "Nytheris homeland"],
+    role: "Source of the collapse threat. Where the Void Shard draws its power. The anti-existence.",
+    veilState: "Sealed by convergence protocols",
     color: "red",
-    icon: "⚠"
+    icon: "◌",
+    image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=700&q=80",
   },
   {
     id: "layer-5",
     number: 5,
-    name: "Temporal Layer",
-    subtitle: "System Layer",
-    description: "The underlying layer connecting all others through time. Governs sequence, causality, and continuity across all realities.",
-    characteristics: ["Time-governing", "Causality-based", "Connects all layers"],
-    role: "Critical in Books V-VII. Unstable behavior produces loops, overlaps, and temporal distortions.",
-    veilState: "Deeply embedded — destabilizes last during collapse",
+    name: "Celestial Plane",
+    subtitle: "Source Layer",
+    description: "The highest layer — origin of all Aetherion. Where the original Core resided before the fracture. Inaccessible to most.",
+    characteristics: ["Origin of existence", "Pre-fracture state", "Convergence destination"],
+    role: "The ultimate goal — to heal the fracture and restore the Celestial Plane. Adrian's final destination.",
+    veilState: "Shattered — the fracture happened here",
     color: "teal",
-    icon: "⧖"
-  }
+    icon: "✧",
+    image: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=700&q=80",
+  },
 ];
 
 export const veilStages = [
-  { stage: 1, name: "Small Anomalies", description: "Visual glitches and minor irregularities." },
-  { stage: 2, name: "Unstable Zones", description: "Energy distortions and localized reality failures." },
-  { stage: 3, name: "Layer Overlap", description: "Rule conflicts between adjacent layers." },
-  { stage: 4, name: "Time Breakdown", description: "Spatial distortion and temporal loops." },
-  { stage: 5, name: "Full Convergence", description: "Complete system collapse — all layers merging." }
+  { stage: 0, name: "Intact", desc: "All layers perfectly separated. Reality stable." },
+  { stage: 1, name: "Strained", desc: "Minor anomalies appear. Rare cross-layer bleed." },
+  { stage: 2, name: "Fractured", desc: "Glitches visible in both worlds. Increasing instability." },
+  { stage: 3, name: "Torn", desc: "Large cross-layer events. Active convergence zones." },
+  { stage: 4, name: "Failing", desc: "Layers actively merging. Collapse accelerating." },
+  { stage: 5, name: "Broken", desc: "Total Veil failure. Full convergence. Existence ends." },
 ];
