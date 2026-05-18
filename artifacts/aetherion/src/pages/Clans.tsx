@@ -1,29 +1,27 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
+import { X, Shield, Swords, AlertCircle } from "lucide-react";
 import { clans, Clan } from "@/data/clansData";
 import SectionHeader from "@/components/SectionHeader";
 
 const clanColorMap: Record<string, { bg: string; border: string; glow: string; text: string }> = {
-  gold: { bg: "rgba(245,158,11,0.07)", border: "rgba(245,158,11,0.25)", glow: "rgba(245,158,11,0.3)", text: "text-amber-400" },
-  "crimson/dark": { bg: "rgba(220,38,38,0.07)", border: "rgba(220,38,38,0.25)", glow: "rgba(220,38,38,0.3)", text: "text-red-400" },
-  "silver/teal": { bg: "rgba(0,212,200,0.07)", border: "rgba(0,212,200,0.25)", glow: "rgba(0,212,200,0.3)", text: "text-teal-400" },
-  "violet/cyan": { bg: "rgba(139,92,246,0.07)", border: "rgba(139,92,246,0.25)", glow: "rgba(139,92,246,0.3)", text: "text-violet-400" },
-  "brown/amber": { bg: "rgba(180,120,60,0.07)", border: "rgba(180,120,60,0.25)", glow: "rgba(180,120,60,0.3)", text: "text-orange-300" },
-  "orange/red": { bg: "rgba(234,88,12,0.07)", border: "rgba(234,88,12,0.25)", glow: "rgba(234,88,12,0.3)", text: "text-orange-400" },
-  "blue/teal": { bg: "rgba(14,165,233,0.07)", border: "rgba(14,165,233,0.25)", glow: "rgba(14,165,233,0.3)", text: "text-sky-400" },
-  "yellow/electric": { bg: "rgba(250,204,21,0.07)", border: "rgba(250,204,21,0.25)", glow: "rgba(250,204,21,0.3)", text: "text-yellow-400" },
-  "purple/lavender": { bg: "rgba(168,85,247,0.07)", border: "rgba(168,85,247,0.25)", glow: "rgba(168,85,247,0.3)", text: "text-purple-400" },
-  "steel/crimson": { bg: "rgba(150,100,100,0.07)", border: "rgba(150,100,100,0.25)", glow: "rgba(150,100,100,0.3)", text: "text-rose-400" },
+  gold:     { bg: "rgba(245,158,11,0.07)", border: "rgba(245,158,11,0.25)", glow: "rgba(245,158,11,0.25)", text: "text-amber-400" },
+  crimson:  { bg: "rgba(220,38,38,0.07)",  border: "rgba(220,38,38,0.25)",  glow: "rgba(220,38,38,0.25)",  text: "text-red-400" },
+  teal:     { bg: "rgba(0,212,200,0.07)",  border: "rgba(0,212,200,0.25)",  glow: "rgba(0,212,200,0.25)",  text: "text-teal-400" },
+  violet:   { bg: "rgba(139,92,246,0.07)", border: "rgba(139,92,246,0.25)", glow: "rgba(139,92,246,0.25)", text: "text-violet-400" },
+  amber:    { bg: "rgba(180,120,60,0.07)", border: "rgba(180,120,60,0.25)", glow: "rgba(180,120,60,0.25)", text: "text-orange-300" },
+  orange:   { bg: "rgba(234,88,12,0.07)",  border: "rgba(234,88,12,0.25)",  glow: "rgba(234,88,12,0.25)",  text: "text-orange-400" },
+  blue:     { bg: "rgba(14,165,233,0.07)", border: "rgba(14,165,233,0.25)", glow: "rgba(14,165,233,0.25)", text: "text-sky-400" },
+  yellow:   { bg: "rgba(250,204,21,0.07)", border: "rgba(250,204,21,0.25)", glow: "rgba(250,204,21,0.25)", text: "text-yellow-400" },
+  purple:   { bg: "rgba(168,85,247,0.07)", border: "rgba(168,85,247,0.25)", glow: "rgba(168,85,247,0.25)", text: "text-purple-400" },
+  red:      { bg: "rgba(150,60,60,0.07)",  border: "rgba(150,60,60,0.25)",  glow: "rgba(150,60,60,0.25)",  text: "text-rose-400" },
 };
 
 function getCol(color: string) {
   return clanColorMap[color] ?? { bg: "rgba(0,212,255,0.05)", border: "rgba(0,212,255,0.15)", glow: "rgba(0,212,255,0.2)", text: "text-cyan-400" };
 }
 
-// SVG clan symbols
 function ClanSymbol({ clan, size = 40 }: { clan: Clan; size?: number }) {
-  const col = getCol(clan.color);
   const c = size / 2;
   const r = size * 0.42;
 
@@ -100,24 +98,36 @@ function ClanSymbol({ clan, size = 40 }: { clan: Clan; size?: number }) {
   );
 }
 
+const interactionColors = {
+  compatible: "text-green-400",
+  opposed: "text-red-400",
+  neutral: "text-slate-400",
+};
+
 export default function Clans() {
   const [selected, setSelected] = useState<Clan | null>(null);
   const [tierFilter, setTierFilter] = useState<"All" | "Core" | "Foundational" | "Functional">("All");
+  const [activeSection, setActiveSection] = useState<"lore" | "dynamics" | "story">("lore");
 
   const filtered = tierFilter === "All" ? clans : clans.filter((c) => c.tier === tierFilter);
+
+  const handleOpen = (clan: Clan) => {
+    setSelected(clan);
+    setActiveSection("lore");
+  };
 
   return (
     <div className="min-h-screen pt-24 pb-20 px-4 relative z-10">
       <div className="max-w-7xl mx-auto">
         <SectionHeader
           title="Clan System"
-          subtitle="Clans are not just groups — they are manifestations of fundamental forces of reality, each representing a philosophy about existence."
+          subtitle="Clans are not just groups — they are living philosophies, each representing a fundamental force of reality. Ten clans. Ten ways of understanding existence."
           accent="CLAN ARCHIVE"
         />
 
         <div className="text-center mb-8">
           <p className="text-xs text-slate-500 font-mono italic">
-            Master rule: Clans are not defined by power, but by what they believe about reality.
+            Master rule: Clans are not defined by power. They are defined by what they believe about reality.
           </p>
         </div>
 
@@ -145,29 +155,44 @@ export default function Clans() {
             return (
               <motion.div
                 key={clan.id}
-                className="p-5 rounded-lg cursor-pointer"
+                className="rounded-xl cursor-pointer overflow-hidden group"
                 style={{ background: col.bg, border: `1px solid ${col.border}`, backdropFilter: "blur(10px)" }}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.06 }}
-                whileHover={{ scale: 1.02, boxShadow: `0 0 30px ${col.glow}` }}
-                onClick={() => setSelected(clan)}
+                whileHover={{ scale: 1.02, boxShadow: `0 0 35px ${col.glow}` }}
+                onClick={() => handleOpen(clan)}
                 data-testid={`card-clan-${clan.id}`}
               >
-                <div className="flex items-center justify-between mb-4">
-                  <ClanSymbol clan={clan} size={44} />
-                  <div className="text-xs font-mono text-slate-600 border border-slate-800 rounded px-2 py-0.5">
-                    {clan.tier}
+                {/* Image */}
+                <div className="relative h-36 overflow-hidden">
+                  <img
+                    src={clan.image}
+                    alt={clan.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, ${col.bg.replace("0.07", "0.97")} 100%)` }} />
+                  <div className="absolute top-3 right-3">
+                    <div className="text-xs font-mono text-slate-400 border border-slate-700/60 rounded px-2 py-0.5"
+                      style={{ background: "rgba(0,0,0,0.5)", backdropFilter: "blur(8px)" }}>
+                      {clan.tier}
+                    </div>
                   </div>
                 </div>
-                <h3 className={`text-lg font-bold mb-1 ${col.text}`} style={{ fontFamily: "'Orbitron', sans-serif" }}>
-                  {clan.name}
-                </h3>
-                <div className="text-xs text-slate-500 mb-3">{clan.element}</div>
-                {clan.philosophy && (
-                  <p className="text-xs text-slate-400 italic leading-relaxed">"{clan.philosophy}"</p>
-                )}
+
+                <div className="p-4">
+                  <div className="flex items-center gap-3 mb-3">
+                    <ClanSymbol clan={clan} size={36} />
+                    <div>
+                      <h3 className={`text-base font-bold ${col.text}`} style={{ fontFamily: "'Orbitron', sans-serif" }}>
+                        {clan.name}
+                      </h3>
+                      <div className="text-xs text-slate-500">{clan.element}</div>
+                    </div>
+                  </div>
+                  <p className="text-xs text-slate-400 italic leading-relaxed line-clamp-2">"{clan.philosophy}"</p>
+                </div>
               </motion.div>
             );
           })}
@@ -177,56 +202,158 @@ export default function Clans() {
       <AnimatePresence>
         {selected && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
-            style={{ background: "rgba(3,7,18,0.92)", backdropFilter: "blur(16px)" }}
+            className="fixed inset-0 z-50 flex items-start justify-center p-4 pt-16 overflow-y-auto"
+            style={{ background: "rgba(3,7,18,0.94)", backdropFilter: "blur(20px)" }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelected(null)}
           >
             <motion.div
-              className="w-full max-w-md p-6 rounded-lg relative"
+              className="w-full max-w-2xl rounded-xl relative overflow-hidden mb-8"
               style={{
-                background: "rgba(10,15,40,0.97)",
+                background: "rgba(8,12,35,0.98)",
                 border: `1px solid ${getCol(selected.color).border}`,
-                boxShadow: `0 0 60px ${getCol(selected.color).glow}`,
+                boxShadow: `0 0 80px ${getCol(selected.color).glow}`,
               }}
-              initial={{ scale: 0.85, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.85, opacity: 0 }}
+              initial={{ scale: 0.88, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.88, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <button className="absolute top-4 right-4 text-slate-500 hover:text-white" onClick={() => setSelected(null)}>
-                <X size={18} />
-              </button>
-              <div className="flex items-center gap-4 mb-4">
-                <ClanSymbol clan={selected} size={56} />
-                <div>
-                  <div className="text-xs font-mono text-slate-500">{selected.tier} Clan</div>
-                  <h2 className={`text-2xl font-bold ${getCol(selected.color).text}`} style={{ fontFamily: "'Orbitron', sans-serif" }}>
-                    {selected.name}
-                  </h2>
-                  <div className="text-xs text-slate-400">{selected.element}</div>
+              {/* Hero */}
+              <div className="relative h-48 overflow-hidden">
+                <img src={selected.image} alt={selected.name} className="w-full h-full object-cover" />
+                <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(8,12,35,0.97) 100%)` }} />
+                <button
+                  className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center text-slate-300 hover:text-white"
+                  style={{ background: "rgba(0,0,0,0.6)", backdropFilter: "blur(8px)" }}
+                  onClick={() => setSelected(null)}
+                >
+                  <X size={16} />
+                </button>
+                <div className="absolute bottom-5 left-6 right-16 flex items-end gap-4">
+                  <ClanSymbol clan={selected} size={52} />
+                  <div>
+                    <div className="text-xs font-mono text-slate-500 mb-0.5">{selected.tier} Clan</div>
+                    <h2 className={`text-2xl font-bold ${getCol(selected.color).text}`} style={{ fontFamily: "'Orbitron', sans-serif" }}>
+                      {selected.name}
+                    </h2>
+                    <div className="text-xs text-slate-400">{selected.element}</div>
+                  </div>
                 </div>
               </div>
-              {selected.philosophy && (
-                <p className={`text-sm italic mb-4 ${getCol(selected.color).text}`}>"{selected.philosophy}"</p>
-              )}
-              <div className="space-y-3">
-                <div>
-                  <div className="text-xs font-mono text-slate-500 mb-1">SYMBOL</div>
-                  <p className="text-slate-300 text-sm">{selected.symbolDesc}</p>
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <div className="text-xs font-mono text-green-600 mb-1">STRENGTH</div>
-                    <p className="text-slate-300 text-sm">{selected.strength}</p>
-                  </div>
-                  <div>
-                    <div className="text-xs font-mono text-red-600 mb-1">WEAKNESS</div>
-                    <p className="text-slate-300 text-sm">{selected.weakness}</p>
-                  </div>
-                </div>
+
+              {/* Philosophy Banner */}
+              <div className="px-6 py-3" style={{ background: `${getCol(selected.color).bg}`, borderBottom: `1px solid ${getCol(selected.color).border}` }}>
+                <p className={`text-sm italic ${getCol(selected.color).text}`}>"{selected.philosophy}"</p>
+              </div>
+
+              {/* Tabs */}
+              <div className="flex border-b border-slate-800/60">
+                {(["lore", "dynamics", "story"] as const).map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveSection(tab)}
+                    className={`flex-1 py-3 text-xs font-mono tracking-widest transition-all ${
+                      activeSection === tab
+                        ? `${getCol(selected.color).text} border-b-2`
+                        : "text-slate-600 hover:text-slate-400"
+                    }`}
+                    style={activeSection === tab ? { borderColor: getCol(selected.color).border } : {}}
+                  >
+                    {tab === "lore" ? "LORE" : tab === "dynamics" ? "STRENGTHS" : "STORY ROLE"}
+                  </button>
+                ))}
+              </div>
+
+              <div className="p-6">
+                <AnimatePresence mode="wait">
+                  {activeSection === "lore" && (
+                    <motion.div key="lore" initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 8 }}
+                      className="space-y-4">
+                      <div>
+                        <div className="text-xs font-mono text-slate-500 tracking-widest mb-2">ORIGIN & BACKSTORY</div>
+                        <p className="text-slate-300 text-sm leading-relaxed">{selected.backstory}</p>
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2 mb-2">
+                          <AlertCircle size={12} className="text-slate-500" />
+                          <div className="text-xs font-mono text-slate-500 tracking-widest">INTERNAL CONFLICT</div>
+                        </div>
+                        <p className="text-slate-400 text-sm italic leading-relaxed">{selected.internalConflict}</p>
+                      </div>
+                      <div>
+                        <div className="text-xs font-mono text-slate-500 tracking-widest mb-2">SYMBOL</div>
+                        <p className="text-slate-400 text-sm">{selected.symbolDesc}</p>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {activeSection === "dynamics" && (
+                    <motion.div key="dynamics" initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 8 }}
+                      className="space-y-4">
+                      <div className="grid grid-cols-1 gap-3">
+                        <div className="p-3 rounded-lg" style={{ background: "rgba(74,222,128,0.05)", border: "1px solid rgba(74,222,128,0.15)" }}>
+                          <div className="flex items-center gap-2 mb-1.5">
+                            <Shield size={12} className="text-green-400" />
+                            <div className="text-xs font-mono text-green-600 tracking-widest">STRENGTH</div>
+                          </div>
+                          <p className="text-slate-300 text-sm">{selected.strength}</p>
+                        </div>
+                        <div className="p-3 rounded-lg" style={{ background: "rgba(220,38,38,0.05)", border: "1px solid rgba(220,38,38,0.15)" }}>
+                          <div className="flex items-center gap-2 mb-1.5">
+                            <Swords size={12} className="text-red-400" />
+                            <div className="text-xs font-mono text-red-600 tracking-widest">WEAKNESS</div>
+                          </div>
+                          <p className="text-slate-300 text-sm">{selected.weakness}</p>
+                        </div>
+                      </div>
+                      {selected.notableMembers && selected.notableMembers.length > 0 && (
+                        <div>
+                          <div className="text-xs font-mono text-slate-500 tracking-widest mb-2">NOTABLE MEMBERS</div>
+                          <div className="flex flex-wrap gap-2">
+                            {selected.notableMembers.map((m, i) => (
+                              <span key={i} className={`text-xs px-3 py-1 rounded-full font-mono ${getCol(selected.color).text}`}
+                                style={{ background: getCol(selected.color).bg, border: `1px solid ${getCol(selected.color).border}` }}>
+                                {m}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {selected.interactions && selected.interactions.length > 0 && (
+                        <div>
+                          <div className="text-xs font-mono text-slate-500 tracking-widest mb-2">CLAN DYNAMICS</div>
+                          <div className="space-y-2">
+                            {selected.interactions.map((inter, i) => (
+                              <div key={i} className="flex gap-3 items-start p-2 rounded"
+                                style={{ background: "rgba(255,255,255,0.02)" }}>
+                                <span className={`text-xs font-mono font-bold flex-shrink-0 mt-0.5 ${interactionColors[inter.type]}`}>
+                                  {inter.type === "compatible" ? "+" : inter.type === "opposed" ? "×" : "~"}
+                                </span>
+                                <div>
+                                  <span className="text-xs text-white font-mono">{inter.clan}</span>
+                                  <span className="text-xs text-slate-500 ml-2">— {inter.dynamic}</span>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </motion.div>
+                  )}
+
+                  {activeSection === "story" && (
+                    <motion.div key="story" initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 8 }}
+                      className="space-y-4">
+                      <div>
+                        <div className="text-xs font-mono text-slate-500 tracking-widest mb-2">ROLE IN THE STORY</div>
+                        <p className="text-slate-300 text-sm leading-relaxed">{selected.roleInStory}</p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </motion.div>
           </motion.div>
