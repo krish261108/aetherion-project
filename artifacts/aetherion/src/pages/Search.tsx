@@ -145,7 +145,7 @@ export default function Search() {
         ) : (
           <div className="space-y-2">
             {results.map((result, i) => {
-              const Icon = categoryIcons[result.category] ?? FileText;
+              const Icon = (categoryIcons[result.category] ?? FileText) as React.ComponentType<{ size?: number; className?: string }>;
               const col = categoryColors[result.category] ?? "text-slate-400";
               return (
                 <motion.div

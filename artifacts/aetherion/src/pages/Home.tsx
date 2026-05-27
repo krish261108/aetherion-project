@@ -1,39 +1,71 @@
-import { useState, useRef, useCallback } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ChevronDown, BookOpen, Users, Shield, Zap, Map, Image } from "lucide-react";
-import AetherionCore from "@/components/AetherionCore";
+import { BookOpen, Users, Shield, Zap, Map, Image, ChevronRight, Globe, Clock, Layers } from "lucide-react";
+import AetherionCrystal from "@/components/AetherionCrystal";
 import LoadingScreen from "@/components/LoadingScreen";
 import SectionHeader from "@/components/SectionHeader";
-import HoloCard from "@/components/HoloCard";
-import GlitchText from "@/components/GlitchText";
+
+/* ── Data ─────────────────────────────────────────────────── */
+const navCards = [
+  { title: "Books Archive", desc: "Seven core volumes + spin-offs — every synopsis, arc, and story thread.", href: "/books", icon: BookOpen, accent: "#7DF9FF" },
+  { title: "Characters", desc: "Every major figure — full profiles, arc progressions, relationship maps.", href: "/characters", icon: Users, accent: "#A855F7" },
+  { title: "Clan System", desc: "10 clans, 10 philosophies. Each a living force of reality.", href: "/clans", icon: Shield, accent: "#C084FC" },
+  { title: "Project AETHER", desc: "Classified files on the science division behind the collapse.", href: "/project-aether", icon: Zap, accent: "#00E5FF" },
+  { title: "Reality Map", desc: "5-layer holographic atlas of every world and Veil node.", href: "/map", icon: Map, accent: "#7DF9FF" },
+  { title: "Universe Codex", desc: "53 canon illustrations — the official visual record.", href: "/gallery", icon: Image, accent: "#A855F7" },
+];
 
 const stats = [
-  { value: "7", label: "Core Books" },
-  { value: "10", label: "Clans" },
-  { value: "5", label: "Reality Layers" },
-  { value: "14", label: "Artifacts" },
-  { value: "5", label: "People Types" },
-  { value: "3", label: "Spin-Offs" },
-  { value: "1", label: "Convergence" },
+  { value: "7", label: "Core Books", icon: BookOpen },
+  { value: "10", label: "Clans", icon: Shield },
+  { value: "5", label: "Reality Layers", icon: Layers },
+  { value: "14", label: "Artifacts", icon: Zap },
+  { value: "3+", label: "Spin-offs", icon: Globe },
+  { value: "1", label: "Convergence", icon: Clock },
 ];
 
-const navCards = [
-  { title: "Books Archive", desc: "Seven core books + spin-offs", href: "/books", icon: BookOpen, color: "#00d4ff", glow: "rgba(0,212,255,0.25)", image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80" },
-  { title: "Characters", desc: "Complete character database", href: "/characters", icon: Users, color: "#8b5cf6", glow: "rgba(139,92,246,0.25)", image: "https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=600&q=80" },
-  { title: "Clan System", desc: "10 clans, 10 philosophies", href: "/clans", icon: Shield, color: "#f59e0b", glow: "rgba(245,158,11,0.25)", image: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=600&q=80" },
-  { title: "Project AETHER", desc: "Classified science files", href: "/project-aether", icon: Zap, color: "#ef4444", glow: "rgba(220,38,38,0.25)", image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80" },
-  { title: "Reality Map", desc: "5-layer holographic atlas", href: "/map", icon: Map, color: "#10b981", glow: "rgba(16,185,129,0.25)", image: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=600&q=80" },
-  { title: "Universe Codex", desc: "53 canon illustrations", href: "/gallery", icon: Image, color: "#a78bfa", glow: "rgba(167,139,250,0.25)", image: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600&q=80" },
+const pillars = [
+  {
+    label: "CORE CONCEPT",
+    title: "The Aetherion Force",
+    content: "A living connection between science and magic. Adrian traces its truth from observation to understanding — learning that the world cannot be controlled, only balanced.",
+    color: "#7DF9FF",
+  },
+  {
+    label: "CENTRAL THEME",
+    title: "Control vs. Balance",
+    content: "Every attempt to dominate the system accelerates the collapse it was meant to prevent. True stability requires alignment, not dominance.",
+    color: "#A855F7",
+  },
+  {
+    label: "CONFLICT AXIS",
+    title: "The Three Paths",
+    content: "Control: Victor, Arkan, Project AETHER. Balance: Liora, natural forces, Aetherion. Understanding: Adrian. Imbalance: Riven, the Void, fractured reality.",
+    color: "#C084FC",
+  },
+  {
+    label: "FINAL TRUTH",
+    title: "The Immutable Law",
+    content: "Reality cannot be forced into perfection. Excess order or chaos both destroy. What defines a being is not ability — it is the choices made when power has no limit.",
+    color: "#00E5FF",
+  },
 ];
 
-const coreCards = [
-  { label: "CORE CONCEPT", content: "Aetherion is a force connecting science and magic. Adrian follows its truth from observation to understanding — learning that the world cannot be controlled, only balanced.", color: "#00d4ff" },
-  { label: "MAIN THEME", content: "Control vs Balance. Every attempt to dominate the system accelerates the collapse it was meant to prevent. True stability requires alignment, not domination.", color: "#8b5cf6" },
-  { label: "CONFLICT STRUCTURE", content: "Control: Victor, Arkan, Project AETHER. Balance: Liora, natural system, Aetherion. Understanding: Adrian. Imbalance: Riven, Void, fractured reality.", color: "#f59e0b" },
-  { label: "FINAL TRUTH", content: "Reality cannot be forced into perfection. Too much order or too much chaos both lead to destruction. A person is defined by choices, not abilities.", color: "#64748b" },
-];
+/* ── Animate variant helpers ──────────────────────────────── */
+const fadeUp = (delay = 0) => ({
+  initial: { opacity: 0, y: 28 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.8, delay, ease: "easeOut" } as const,
+});
+const fadeUpView = (delay = 0) => ({
+  initial: { opacity: 0, y: 28 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+  transition: { duration: 0.7, delay, ease: "easeOut" } as const,
+});
 
+/* ── Component ────────────────────────────────────────────── */
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
 
@@ -42,347 +74,346 @@ export default function Home() {
       {!loaded && <LoadingScreen onComplete={() => setLoaded(true)} />}
 
       <div className="relative z-10">
-        {/* ─── Hero ──────────────────────────────────────────────── */}
-        <section className="min-h-screen flex flex-col items-center justify-center px-4 text-center pt-16 relative overflow-hidden">
 
-          {/* Holographic perspective grid floor */}
+        {/* ════════════════════════ HERO ════════════════════════ */}
+        <section className="relative min-h-screen flex flex-col items-center overflow-hidden">
+
+          {/* Top radial ambient glow */}
           <div
-            className="absolute bottom-0 left-0 right-0 h-64 pointer-events-none"
+            className="absolute inset-0 pointer-events-none"
             style={{
-              background: "linear-gradient(to top, rgba(0,212,255,0.04) 0%, transparent 100%)",
-              backgroundImage: "linear-gradient(rgba(0,212,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.06) 1px, transparent 1px)",
-              backgroundSize: "40px 40px",
-              transform: "perspective(400px) rotateX(60deg)",
-              transformOrigin: "bottom center",
-              maskImage: "linear-gradient(to top, black 0%, transparent 100%)",
-              WebkitMaskImage: "linear-gradient(to top, black 0%, transparent 100%)",
+              background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(125,249,255,0.06) 0%, rgba(168,85,247,0.04) 40%, transparent 70%)",
             }}
           />
 
-          {/* Corner HUD decorations */}
-          <div className="absolute top-20 left-6 hidden lg:block pointer-events-none">
-            <div className="text-[9px] font-mono text-cyan-500/20 space-y-1" style={{ fontFamily: "'Share Tech Mono', monospace" }}>
-              <div>SYS // ARCHIVE-7</div>
-              <div>LAYER STATUS: STABLE</div>
-              <div>VEIL INTEGRITY: 78%</div>
-              <div>CONVERGENCE: PENDING</div>
-            </div>
-          </div>
-          <div className="absolute top-20 right-6 hidden lg:block pointer-events-none text-right">
-            <div className="text-[9px] font-mono text-cyan-500/20 space-y-1" style={{ fontFamily: "'Share Tech Mono', monospace" }}>
-              <div>KRISH SINGH // AUTHOR</div>
-              <div>BOOKS PUBLISHED: 0/7</div>
-              <div>CLANS ACTIVE: 10/10</div>
-              <div>AETHERION CORE: ACTIVE</div>
-            </div>
-          </div>
+          {/* Label */}
+          <motion.div {...fadeUp(0.15)} className="mt-24 mb-6 flex items-center gap-3">
+            <span className="block w-8 h-px" style={{ background: "linear-gradient(to right, transparent, rgba(125,249,255,0.5))" }} />
+            <span
+              className="text-[10px] tracking-[0.35em] uppercase"
+              style={{ color: "rgba(125,249,255,0.6)", fontFamily: "'Share Tech Mono', monospace" }}
+            >
+              Official Universe Archive · Krish Singh
+            </span>
+            <span className="block w-8 h-px" style={{ background: "linear-gradient(to left, transparent, rgba(125,249,255,0.5))" }} />
+          </motion.div>
 
+          {/* Main title */}
+          <motion.div {...fadeUp(0.25)} className="text-center px-6 relative z-10">
+            <h1
+              className="leading-[0.9] font-black tracking-tight select-none"
+              style={{
+                fontFamily: "'Orbitron', sans-serif",
+                fontSize: "clamp(3rem, 10vw, 8.5rem)",
+                background: "linear-gradient(160deg, #ffffff 0%, #7DF9FF 30%, #A855F7 60%, #7DF9FF 80%, #e2e8f0 100%)",
+                backgroundSize: "200% 200%",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                animation: "holo-text-shift 10s ease-in-out infinite",
+              }}
+            >
+              THE AETHERION
+              <br />
+              <span style={{ fontSize: "0.55em", letterSpacing: "0.25em" }}>CYCLE</span>
+            </h1>
+          </motion.div>
+
+          {/* Crystal — centerpiece */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={loaded ? { opacity: 1 } : {}}
-            transition={{ duration: 1.2 }}
-            className="flex flex-col items-center relative z-10"
+            className="relative w-full"
+            style={{ maxWidth: 680, height: "min(62vh, 580px)" }}
+            initial={{ opacity: 0, scale: 0.88 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.4, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
           >
-            {/* Accent label */}
+            <AetherionCrystal className="w-full h-full" />
+
+            {/* Bottom crystal fade */}
+            <div
+              className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
+              style={{ background: "linear-gradient(to top, #050816, transparent)" }}
+            />
+          </motion.div>
+
+          {/* Subtitle */}
+          <motion.p
+            {...fadeUp(0.7)}
+            className="text-center text-base md:text-lg text-slate-400 max-w-xl px-6 -mt-8 leading-relaxed"
+            style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+          >
+            A fractured reality. A hidden truth. Seven books charting one universe's
+            war between order, chaos, and the force that was never meant to be controlled.
+          </motion.p>
+
+          {/* CTA group */}
+          <motion.div {...fadeUp(0.85)} className="flex flex-wrap items-center justify-center gap-4 mt-10 px-4">
+            <Link
+              href="/books"
+              className="relative inline-flex items-center gap-2 px-8 py-3.5 text-sm font-medium tracking-widest uppercase overflow-hidden rounded-sm"
+              style={{
+                background: "linear-gradient(135deg, rgba(125,249,255,0.12), rgba(168,85,247,0.08))",
+                border: "1px solid rgba(125,249,255,0.35)",
+                color: "#7DF9FF",
+                fontFamily: "'Share Tech Mono', monospace",
+                letterSpacing: "0.2em",
+                boxShadow: "0 0 24px rgba(125,249,255,0.1), inset 0 1px 0 rgba(125,249,255,0.06)",
+              }}
+            >
+              <span>Enter Archive</span>
+              <ChevronRight size={14} />
+            </Link>
+            <Link
+              href="/map"
+              className="inline-flex items-center gap-2 px-7 py-3.5 text-sm font-medium tracking-widest uppercase rounded-sm"
+              style={{
+                background: "rgba(11,16,38,0.5)",
+                border: "1px solid rgba(168,85,247,0.3)",
+                color: "#C084FC",
+                fontFamily: "'Share Tech Mono', monospace",
+                letterSpacing: "0.2em",
+              }}
+            >
+              <Map size={14} />
+              <span>Reality Map</span>
+            </Link>
+            <Link
+              href="/gallery"
+              className="inline-flex items-center gap-2 px-7 py-3.5 text-sm font-medium tracking-widest uppercase rounded-sm"
+              style={{
+                background: "rgba(11,16,38,0.5)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                color: "rgba(255,255,255,0.4)",
+                fontFamily: "'Share Tech Mono', monospace",
+                letterSpacing: "0.2em",
+              }}
+            >
+              <Image size={14} />
+              <span>Codex</span>
+            </Link>
+          </motion.div>
+
+          {/* Scroll indicator */}
+          <motion.div
+            className="mt-16 mb-8 flex flex-col items-center gap-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.4 }}
+          >
+            <div className="text-[9px] tracking-[0.3em] uppercase" style={{ color: "rgba(125,249,255,0.3)", fontFamily: "'Share Tech Mono', monospace" }}>
+              scroll
+            </div>
             <motion.div
-              className="flex items-center gap-2 mb-6"
-              initial={{ opacity: 0, y: -10 }}
-              animate={loaded ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.3 }}
-            >
-              <motion.div className="w-1 h-1 rounded-full bg-cyan-400" style={{ boxShadow: "0 0 6px rgba(0,212,255,0.8)" }} animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.2, repeat: Infinity }} />
-              <span className="text-xs tracking-[0.3em] text-cyan-500/70 font-mono" style={{ fontFamily: "'Share Tech Mono', monospace" }}>
-                OFFICIAL UNIVERSE ARCHIVE — CLEARANCE GRANTED
-              </span>
-              <motion.div className="w-1 h-1 rounded-full bg-cyan-400" style={{ boxShadow: "0 0 6px rgba(0,212,255,0.8)" }} animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.2, repeat: Infinity, delay: 0.6 }} />
-            </motion.div>
-
-            {/* Aetherion Core */}
-            <motion.div
-              initial={{ scale: 0.4, opacity: 0 }}
-              animate={loaded ? { scale: 1, opacity: 1 } : {}}
-              transition={{ delay: 0.4, duration: 1.2, type: "spring", stiffness: 80 }}
-              className="mb-8"
-            >
-              <AetherionCore size={300} />
-            </motion.div>
-
-            {/* Main title */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={loaded ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.7, duration: 0.8 }}
-            >
-              <GlitchText
-                as="h1"
-                className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-wider mb-4 leading-tight"
-                style={{
-                  fontFamily: "'Orbitron', sans-serif",
-                  background: "linear-gradient(135deg, #ffffff 0%, #00d4ff 30%, #8b5cf6 60%, #00d4ff 80%, #ffffff 100%)",
-                  backgroundSize: "200% 200%",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                  filter: "drop-shadow(0 0 20px rgba(0,212,255,0.3))",
-                }}
-                intensity="high"
-              >
-                THE AETHERION CYCLE
-              </GlitchText>
-            </motion.div>
-
-            <motion.p
-              className="text-lg sm:text-xl mb-3 max-w-2xl"
-              style={{ color: "rgba(103,232,249,0.85)", textShadow: "0 0 20px rgba(0,212,255,0.3)" }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={loaded ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.9 }}
-            >
-              A broken reality. A hidden system. A war between control and balance.
-            </motion.p>
-
-            <motion.p
-              className="text-sm sm:text-base text-slate-400 mb-10 max-w-xl leading-relaxed"
-              initial={{ opacity: 0, y: 20 }}
-              animate={loaded ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 1.1 }}
-            >
-              A futuristic science-fantasy universe where reality exists in layers, magic and science are
-              two interpretations of the same force, and humanity's attempt to control Aetherion threatens
-              to collapse existence itself.
-            </motion.p>
-
-            {/* CTA buttons */}
-            <motion.div
-              className="flex flex-wrap gap-3 justify-center"
-              initial={{ opacity: 0, y: 20 }}
-              animate={loaded ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 1.3 }}
-            >
-              {[
-                { href: "/books", label: "ENTER THE ARCHIVE", color: "#00d4ff", border: "rgba(0,212,255,0.4)", bg: "rgba(0,212,255,0.06)", shadow: "rgba(0,212,255,0.4)", testId: "button-enter-archive" },
-                { href: "/map", label: "3D REALITY MAP", color: "#10b981", border: "rgba(16,185,129,0.4)", bg: "rgba(16,185,129,0.06)", shadow: "rgba(16,185,129,0.4)", testId: "button-3d-map" },
-                { href: "/project-aether", label: "PROJECT AETHER", color: "#ef4444", border: "rgba(220,38,38,0.4)", bg: "rgba(220,38,38,0.05)", shadow: "rgba(220,38,38,0.4)", testId: "button-project-aether" },
-              ].map((btn) => (
-                <Link key={btn.href} href={btn.href}>
-                  <motion.button
-                    className="px-6 py-2.5 text-xs font-mono tracking-widest rounded border relative overflow-hidden holo-shine"
-                    style={{ color: btn.color, borderColor: btn.border, background: btn.bg, fontFamily: "'Share Tech Mono', monospace" }}
-                    whileHover={{ scale: 1.04, boxShadow: `0 0 24px ${btn.shadow}, 0 0 48px ${btn.shadow.replace("0.4", "0.15")}` }}
-                    whileTap={{ scale: 0.97 }}
-                    data-testid={btn.testId}
-                  >
-                    {btn.label}
-                  </motion.button>
-                </Link>
-              ))}
-            </motion.div>
-
-            <motion.div
-              className="mt-12 text-slate-600"
-              animate={{ y: [0, 8, 0] }}
+              className="w-px h-10"
+              style={{ background: "linear-gradient(to bottom, rgba(125,249,255,0.35), transparent)" }}
+              animate={{ scaleY: [1, 0.5, 1], opacity: [0.5, 1, 0.5] }}
               transition={{ duration: 2, repeat: Infinity }}
-            >
-              <ChevronDown size={24} />
-            </motion.div>
+            />
           </motion.div>
         </section>
 
-        {/* ─── Stats ─────────────────────────────────────────────── */}
-        <section className="py-12 px-4 relative">
+        {/* ═══════════════════════ STATS ════════════════════════ */}
+        <section className="py-16 px-4">
           <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
-              {stats.map((stat, i) => (
+            <div className="grid grid-cols-3 md:grid-cols-6 gap-0 rounded-sm overflow-hidden"
+              style={{ border: "1px solid rgba(125,249,255,0.08)", background: "rgba(11,16,38,0.4)", backdropFilter: "blur(24px)" }}
+            >
+              {stats.map((s, i) => (
                 <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.06 }}
+                  key={s.label}
+                  {...fadeUpView(i * 0.06)}
+                  className="flex flex-col items-center justify-center py-8 px-3 text-center"
+                  style={{ borderRight: i < stats.length - 1 ? "1px solid rgba(125,249,255,0.07)" : "none" }}
                 >
-                  <HoloCard
-                    className="text-center p-4 rounded-lg"
-                    style={{
-                      background: "rgba(0,212,255,0.04)",
-                      border: "1px solid rgba(0,212,255,0.1)",
-                    }}
-                    color="rgba(0,212,255,1)"
-                    glowColor="rgba(0,212,255,0.15)"
-                    intensity={8}
-                    cornerBrackets={false}
-                    animatedBorder={false}
+                  <div
+                    className="text-3xl md:text-4xl font-black mb-1"
+                    style={{ fontFamily: "'Orbitron', sans-serif", color: "#7DF9FF", textShadow: "0 0 20px rgba(125,249,255,0.4)" }}
                   >
-                    <div className="text-2xl font-bold text-cyan-400 mb-1 neon-cyan" style={{ fontFamily: "'Orbitron', sans-serif" }}>
-                      {stat.value}
-                    </div>
-                    <div className="text-xs text-slate-500 font-mono">{stat.label}</div>
-                  </HoloCard>
+                    {s.value}
+                  </div>
+                  <div className="text-[10px] tracking-[0.15em] uppercase text-slate-500" style={{ fontFamily: "'Share Tech Mono', monospace" }}>
+                    {s.label}
+                  </div>
                 </motion.div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ─── Universe Core ──────────────────────────────────────── */}
-        <section className="py-20 px-4">
-          <div className="max-w-4xl mx-auto">
-            <SectionHeader
-              title="Universe Core"
-              subtitle="The central philosophy behind The Aetherion Cycle"
-              accent="UNIVERSE OVERVIEW"
-            />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              {coreCards.map((card, i) => (
-                <motion.div
-                  key={card.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                >
-                  <HoloCard
-                    className="p-6 rounded-xl h-full"
-                    style={{
-                      background: "rgba(6,9,26,0.8)",
-                      border: `1px solid ${card.color}20`,
-                      backdropFilter: "blur(12px)",
-                    }}
-                    color={card.color}
-                    glowColor={`${card.color.slice(0, -1)}, 0.2)`}
-                    intensity={10}
-                    cornerBrackets
-                  >
-                    <div className="text-xs font-mono tracking-widest mb-3" style={{ color: card.color, fontFamily: "'Share Tech Mono', monospace" }}>
-                      {card.label}
-                    </div>
-                    <p className="text-slate-300 text-sm leading-relaxed">{card.content}</p>
-                  </HoloCard>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ─── Nav Cards ──────────────────────────────────────────── */}
+        {/* ════════════════════ ARCHIVE CARDS ═══════════════════ */}
         <section className="py-20 px-4">
           <div className="max-w-6xl mx-auto">
-            <SectionHeader title="Explore the Archive" accent="NAVIGATION" />
+            <SectionHeader
+              title="Explore the Archive"
+              subtitle="The complete canon — every world, person, clan, and secret documented in the Aetherion Cycle."
+              accent="UNIVERSE DATABASE"
+            />
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {navCards.map((card, i) => (
-                <Link key={card.href} href={card.href}>
-                  <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.08 }}
-                  >
-                    <HoloCard
-                      className="rounded-xl cursor-pointer overflow-hidden"
-                      style={{ border: `1px solid ${card.color}25` }}
-                      color={card.color}
-                      glowColor={card.glow}
-                      intensity={14}
-                      cornerBrackets
-                      animatedBorder
-                      data-testid={`card-nav-${card.title.toLowerCase().replace(/\s/g, "-")}`}
+              {navCards.map((card, i) => {
+                const Icon = card.icon;
+                return (
+                  <motion.div key={card.href} {...fadeUpView(i * 0.08)}>
+                    <Link
+                      href={card.href}
+                      className="group flex flex-col gap-4 p-6 rounded-sm cursor-pointer relative overflow-hidden holo-shine hud-corners"
+                      style={{
+                        background: "rgba(11,16,38,0.6)",
+                        border: "1px solid rgba(125,249,255,0.1)",
+                        backdropFilter: "blur(24px)",
+                        transition: "border-color 0.3s, box-shadow 0.3s",
+                        display: "flex",
+                        textDecoration: "none",
+                        color: "inherit",
+                      }}
+                      onMouseEnter={(e) => {
+                        (e.currentTarget as HTMLElement).style.borderColor = `${card.accent}40`;
+                        (e.currentTarget as HTMLElement).style.boxShadow = `0 0 32px ${card.accent}12`;
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.currentTarget as HTMLElement).style.borderColor = "rgba(125,249,255,0.1)";
+                        (e.currentTarget as HTMLElement).style.boxShadow = "none";
+                      }}
                     >
-                      {/* Image */}
-                      <div className="relative h-36 overflow-hidden">
-                        <img
-                          src={card.image}
-                          alt={card.title}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                          style={{ filter: "brightness(0.4) saturate(1.4)" }}
-                        />
-                        {/* Holographic overlay */}
-                        <div className="absolute inset-0 scanlines" style={{ background: `linear-gradient(to bottom, ${card.color}08 0%, rgba(6,9,26,0.95) 100%)` }} />
-                        {/* Icon */}
-                        <card.icon
-                          size={22}
-                          className="absolute top-3 left-3"
-                          style={{ color: card.color, filter: `drop-shadow(0 0 8px ${card.color})` }}
-                        />
-                        {/* Scan line */}
-                        <motion.div
-                          className="absolute left-0 right-0 h-px"
-                          style={{ background: `linear-gradient(90deg, transparent, ${card.color}60, transparent)` }}
-                          animate={{ y: [0, 144, 0] }}
-                          transition={{ duration: 3 + i, repeat: Infinity, ease: "linear" }}
-                        />
+                      {/* Icon */}
+                      <div
+                        className="w-10 h-10 rounded-sm flex items-center justify-center"
+                        style={{ background: `${card.accent}14`, border: `1px solid ${card.accent}30` }}
+                      >
+                        <Icon size={18} style={{ color: card.accent }} />
                       </div>
 
-                      {/* Content */}
-                      <div
-                        className="p-4"
-                        style={{ background: `linear-gradient(135deg, ${card.color}08, rgba(6,9,26,0.9))` }}
-                      >
-                        <GlitchText
-                          as="h3"
-                          className="font-bold text-white mb-1 text-sm tracking-wide"
-                          style={{ fontFamily: "'Orbitron', sans-serif" }}
-                          intensity="low"
+                      {/* Text */}
+                      <div>
+                        <h3
+                          className="font-bold text-base mb-1.5 tracking-wide"
+                          style={{ fontFamily: "'Orbitron', sans-serif", color: "rgba(255,255,255,0.9)", fontSize: "0.9rem" }}
                         >
                           {card.title}
-                        </GlitchText>
-                        <p className="text-slate-400 text-xs mb-3">{card.desc}</p>
-                        <div className="flex items-center gap-1 text-xs font-mono" style={{ color: card.color, fontFamily: "'Share Tech Mono', monospace" }}>
-                          <span>EXPLORE</span>
-                          <motion.span animate={{ x: [0, 3, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>→</motion.span>
-                        </div>
+                        </h3>
+                        <p className="text-slate-500 text-sm leading-relaxed" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                          {card.desc}
+                        </p>
                       </div>
-                    </HoloCard>
+
+                      {/* Arrow */}
+                      <div className="mt-auto flex items-center gap-1.5 text-xs tracking-widest uppercase"
+                        style={{ color: card.accent, fontFamily: "'Share Tech Mono', monospace", opacity: 0.7, transition: "opacity 0.2s" }}
+                      >
+                        <span>Access Records</span>
+                        <ChevronRight size={11} />
+                      </div>
+
+                      {/* Hover glow corner */}
+                      <div
+                        className="absolute -bottom-12 -right-12 w-32 h-32 rounded-full pointer-events-none opacity-0 group-hover:opacity-100"
+                        style={{ background: `radial-gradient(circle, ${card.accent}15 0%, transparent 70%)`, transition: "opacity 0.4s" }}
+                      />
+                    </Link>
                   </motion.div>
-                </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* ═══════════════════ UNIVERSE PILLARS ═════════════════ */}
+        <section className="py-20 px-4">
+          <div className="max-w-6xl mx-auto">
+            <SectionHeader
+              title="Universe Architecture"
+              subtitle="The immutable laws and living philosophies that govern existence in the Aetherion Cycle."
+              accent="FOUNDATIONAL LORE"
+              accentColor="#A855F7"
+            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {pillars.map((p, i) => (
+                <motion.div
+                  key={p.label}
+                  {...fadeUpView(i * 0.1)}
+                  className="p-7 rounded-sm relative overflow-hidden holo-shine"
+                  style={{
+                    background: "rgba(11,16,38,0.55)",
+                    border: `1px solid ${p.color}20`,
+                    backdropFilter: "blur(24px)",
+                  }}
+                >
+                  {/* Top accent bar */}
+                  <div className="h-px w-full mb-6" style={{ background: `linear-gradient(to right, ${p.color}60, transparent)` }} />
+
+                  <div
+                    className="text-[9px] tracking-[0.3em] uppercase mb-3"
+                    style={{ color: `${p.color}80`, fontFamily: "'Share Tech Mono', monospace" }}
+                  >
+                    {p.label}
+                  </div>
+                  <h3
+                    className="text-lg font-bold mb-3"
+                    style={{ fontFamily: "'Orbitron', sans-serif", color: p.color, textShadow: `0 0 16px ${p.color}40` }}
+                  >
+                    {p.title}
+                  </h3>
+                  <p className="text-slate-400 text-sm leading-relaxed" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                    {p.content}
+                  </p>
+
+                  {/* Corner glow */}
+                  <div
+                    className="absolute -top-8 -right-8 w-28 h-28 rounded-full pointer-events-none"
+                    style={{ background: `radial-gradient(circle, ${p.color}10 0%, transparent 70%)` }}
+                  />
+                </motion.div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ─── Bottom convergence banner ───────────────────────────── */}
-        <section className="py-16 px-4">
-          <div className="max-w-4xl mx-auto">
-            <HoloCard
-              className="rounded-2xl p-10 text-center relative overflow-hidden"
-              style={{
-                background: "radial-gradient(ellipse at 50% 0%, rgba(0,212,255,0.08) 0%, rgba(6,9,26,0.95) 60%)",
-                border: "1px solid rgba(0,212,255,0.15)",
-              }}
-              color="rgba(0,212,255,1)"
-              glowColor="rgba(0,212,255,0.2)"
-              intensity={6}
-              cornerBrackets
-              animatedBorder
+        {/* ════════════════════ CONVERGENCE CTA ═════════════════ */}
+        <section className="py-28 px-4">
+          <motion.div
+            {...fadeUpView(0)}
+            className="max-w-2xl mx-auto text-center"
+          >
+            <div className="text-[10px] tracking-[0.35em] uppercase mb-5"
+              style={{ color: "rgba(125,249,255,0.4)", fontFamily: "'Share Tech Mono', monospace" }}
             >
-              <div className="text-[10px] font-mono tracking-[0.3em] text-cyan-500/50 mb-3" style={{ fontFamily: "'Share Tech Mono', monospace" }}>
-                THE FINAL STATE
-              </div>
-              <GlitchText
-                as="h2"
-                className="text-2xl md:text-3xl font-bold text-white mb-4"
-                style={{ fontFamily: "'Orbitron', sans-serif" }}
-                intensity="medium"
-              >
-                CONVERGENCE IS COMING
-              </GlitchText>
-              <p className="text-slate-400 text-sm max-w-xl mx-auto leading-relaxed">
-                Seven books. Ten clans. One Aetherion. The layers are thinning. The Veil is fracturing.
-                What happens when everything reconnects will determine whether reality survives — or ends.
-              </p>
-              <div className="mt-6 flex items-center justify-center gap-2">
-                {[...Array(7)].map((_, i) => (
-                  <motion.div
-                    key={i}
-                    className="w-2 h-2 rounded-full"
-                    style={{ background: i < 3 ? "#00d4ff" : "rgba(0,212,255,0.2)", boxShadow: i < 3 ? "0 0 6px rgba(0,212,255,0.8)" : "none" }}
-                    animate={i < 3 ? { scale: [1, 1.4, 1] } : {}}
-                    transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
-                  />
-                ))}
-              </div>
-              <div className="mt-2 text-[10px] font-mono text-slate-600">BOOK 3 OF 7 — IN PROGRESS</div>
-            </HoloCard>
-          </div>
+              The Convergence Approaches
+            </div>
+            <h2
+              className="text-3xl md:text-5xl font-black mb-6 leading-tight"
+              style={{
+                fontFamily: "'Orbitron', sans-serif",
+                background: "linear-gradient(135deg, #e2e8f0, #7DF9FF, #A855F7)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              Where Reality
+              <br />Fractures
+            </h2>
+            <p className="text-slate-500 mb-10 leading-relaxed text-sm md:text-base" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+              Seven books. Ten clans. Five layers of reality collapsing into one moment.
+              The archive contains everything. Begin where you must.
+            </p>
+            <Link
+              href="/books"
+              className="inline-flex items-center gap-3 px-10 py-4 text-sm font-medium tracking-widest uppercase"
+              style={{
+                background: "linear-gradient(135deg, rgba(125,249,255,0.15), rgba(168,85,247,0.1))",
+                border: "1px solid rgba(125,249,255,0.25)",
+                color: "#7DF9FF",
+                fontFamily: "'Share Tech Mono', monospace",
+                letterSpacing: "0.2em",
+                boxShadow: "0 0 40px rgba(125,249,255,0.08)",
+                borderRadius: "2px",
+              }}
+            >
+              Begin the Cycle
+              <ChevronRight size={14} />
+            </Link>
+          </motion.div>
         </section>
+
       </div>
     </>
   );

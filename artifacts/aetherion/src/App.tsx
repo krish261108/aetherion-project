@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import StarfieldBackground from "@/components/StarfieldBackground";
+import CursorGlow from "@/components/CursorGlow";
 import AmbientAudio from "@/components/AmbientAudio";
 import ClickEffect from "@/components/ClickEffect";
 import Home from "@/pages/Home";
@@ -50,13 +51,14 @@ function Router() {
 
 function Layout() {
   return (
-    <div className="min-h-screen relative" style={{ background: "#030712" }}>
+    <div className="min-h-screen relative" style={{ background: "#050816" }}>
       <StarfieldBackground />
-      {/* Global holographic top glow */}
+      <CursorGlow />
+      {/* Global top ambient arc */}
       <div
         className="fixed inset-0 z-0 pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse 120% 80% at 50% -10%, rgba(0,212,255,0.04) 0%, transparent 60%)",
+          background: "radial-gradient(ellipse 100% 50% at 50% -5%, rgba(125,249,255,0.05) 0%, rgba(168,85,247,0.03) 45%, transparent 65%)",
         }}
       />
       <Navbar />
