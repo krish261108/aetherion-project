@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Shield, Swords, AlertCircle } from "lucide-react";
 import { clans, Clan } from "@/data/clansData";
 import SectionHeader from "@/components/SectionHeader";
+import HoloCard from "@/components/HoloCard";
+import GlitchText from "@/components/GlitchText";
 
 const clanColorMap: Record<string, { bg: string; border: string; glow: string; text: string }> = {
   gold:     { bg: "rgba(245,158,11,0.07)", border: "rgba(245,158,11,0.25)", glow: "rgba(245,158,11,0.25)", text: "text-amber-400" },
@@ -155,13 +157,19 @@ export default function Clans() {
             return (
               <motion.div
                 key={clan.id}
-                className="rounded-xl cursor-pointer overflow-hidden group"
-                style={{ background: col.bg, border: `1px solid ${col.border}`, backdropFilter: "blur(10px)" }}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.06 }}
-                whileHover={{ scale: 1.02, boxShadow: `0 0 35px ${col.glow}` }}
+              >
+              <HoloCard
+                className="rounded-xl cursor-pointer overflow-hidden h-full"
+                style={{ background: col.bg, border: `1px solid ${col.border}`, backdropFilter: "blur(12px)" }}
+                color={col.border.replace("0.25", "1")}
+                glowColor={col.glow}
+                intensity={12}
+                cornerBrackets
+                animatedBorder
                 onClick={() => handleOpen(clan)}
                 data-testid={`card-clan-${clan.id}`}
               >
@@ -193,6 +201,7 @@ export default function Clans() {
                   </div>
                   <p className="text-xs text-slate-400 italic leading-relaxed line-clamp-2">"{clan.philosophy}"</p>
                 </div>
+              </HoloCard>
               </motion.div>
             );
           })}

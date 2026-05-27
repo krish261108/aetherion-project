@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Gem, Skull } from "lucide-react";
 import { artifacts, Artifact } from "@/data/artifactsData";
 import SectionHeader from "@/components/SectionHeader";
+import HoloCard from "@/components/HoloCard";
+import GlitchText from "@/components/GlitchText";
 
 const dangerConfig: Record<string, { color: string; bg: string; border: string }> = {
   EXTREME: { color: "text-violet-400", bg: "rgba(139,92,246,0.1)", border: "rgba(139,92,246,0.4)" },
@@ -85,17 +87,19 @@ export default function Artifacts() {
             return (
               <motion.div
                 key={art.id}
-                className="rounded-lg cursor-pointer overflow-hidden"
-                style={{
-                  background: "rgba(10,15,40,0.7)",
-                  border: `1px solid ${cc.border}`,
-                  backdropFilter: "blur(10px)",
-                }}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05 }}
-                whileHover={{ scale: 1.02, boxShadow: `0 0 30px ${cc.glow}` }}
+              >
+              <HoloCard
+                className="rounded-lg cursor-pointer overflow-hidden h-full"
+                style={{ background: "rgba(6,9,26,0.85)", border: `1px solid ${cc.border}`, backdropFilter: "blur(12px)" }}
+                color={cc.border.replace("0.3", "1").replace("0.25", "1").replace("0.2", "1")}
+                glowColor={cc.glow}
+                intensity={12}
+                cornerBrackets
+                animatedBorder
                 onClick={() => setSelected(art)}
                 data-testid={`card-artifact-${art.id}`}
               >
@@ -140,6 +144,7 @@ export default function Artifacts() {
                     <div className="mt-3 text-xs text-slate-600 font-mono">Clan: {art.clan}</div>
                   )}
                 </div>
+              </HoloCard>
               </motion.div>
             );
           })}
