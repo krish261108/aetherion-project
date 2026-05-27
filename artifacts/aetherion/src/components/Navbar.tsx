@@ -3,7 +3,7 @@ import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
-const navLinks = [
+const navLinks: { label: string; href: string; highlight?: boolean }[] = [
   { label: "Home", href: "/" },
   { label: "Books", href: "/books" },
   { label: "Characters", href: "/characters" },
@@ -11,6 +11,8 @@ const navLinks = [
   { label: "Artifacts", href: "/artifacts" },
   { label: "Project AETHER", href: "/project-aether" },
   { label: "World", href: "/world" },
+  { label: "Map", href: "/map", highlight: true },
+  { label: "Gallery", href: "/gallery", highlight: true },
   { label: "Power", href: "/power" },
   { label: "Timeline", href: "/timeline" },
   { label: "People", href: "/people" },
@@ -65,10 +67,16 @@ export default function Navbar() {
                       className={`px-2 py-1 text-[10px] font-mono rounded transition-all duration-200 cursor-pointer tracking-wide ${
                         active
                           ? "text-cyan-400 bg-cyan-950/50"
+                          : link.highlight
+                          ? "text-violet-400 hover:text-violet-300 hover:bg-violet-950/30"
                           : "text-slate-400 hover:text-cyan-400 hover:bg-slate-900/50"
                       }`}
                       style={{
-                        borderBottom: active ? "1px solid rgba(0,212,255,0.5)" : "1px solid transparent",
+                        borderBottom: active
+                          ? "1px solid rgba(0,212,255,0.5)"
+                          : link.highlight && !active
+                          ? "1px solid rgba(139,92,246,0.3)"
+                          : "1px solid transparent",
                       }}
                     >
                       {link.label}

@@ -19,6 +19,8 @@ import Archive from "@/pages/Archive";
 import Search from "@/pages/Search";
 import People from "@/pages/People";
 import Author from "@/pages/Author";
+import Map from "@/pages/Map";
+import Gallery from "@/pages/Gallery";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -39,6 +41,8 @@ function Router() {
       <Route path="/search" component={Search} />
       <Route path="/people" component={People} />
       <Route path="/author" component={Author} />
+      <Route path="/map" component={Map} />
+      <Route path="/gallery" component={Gallery} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -48,6 +52,13 @@ function Layout() {
   return (
     <div className="min-h-screen relative" style={{ background: "#030712" }}>
       <StarfieldBackground />
+      {/* Global holographic top glow */}
+      <div
+        className="fixed inset-0 z-0 pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse 120% 80% at 50% -10%, rgba(0,212,255,0.04) 0%, transparent 60%)",
+        }}
+      />
       <Navbar />
       <main className="relative z-10">
         <Router />
