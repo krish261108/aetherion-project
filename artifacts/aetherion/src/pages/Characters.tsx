@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, User, Zap, Target, GitBranch } from "lucide-react";
 import { characters, Character } from "@/data/charactersData";
 import SectionHeader from "@/components/SectionHeader";
+import HoloCard from "@/components/HoloCard";
+import GlitchText from "@/components/GlitchText";
 
 const statusColors: Record<string, string> = {
   Active: "text-cyan-400 border-cyan-800",
@@ -72,46 +74,63 @@ export default function Characters() {
             return (
               <motion.div
                 key={char.id}
-                className="rounded-xl cursor-pointer relative overflow-hidden group"
-                style={{ background: col.bg, border: `1px solid ${col.border}`, backdropFilter: "blur(10px)" }}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.06 }}
-                whileHover={{ scale: 1.02, boxShadow: `0 0 30px ${col.glow}` }}
-                onClick={() => handleOpen(char)}
-                data-testid={`card-character-${char.id}`}
               >
-                {/* Photo */}
-                <div className="relative h-44 overflow-hidden">
-                  <img
-                    src={char.image}
-                    alt={char.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, ${col.bg.replace("0.06", "0.97")} 100%)` }} />
-                  <div className="absolute top-3 right-3">
-                    <div className={`text-xs font-mono px-2 py-0.5 border rounded ${statusColors[char.status] ?? "text-slate-400 border-slate-800"}`}
-                      style={{ background: "rgba(0,0,0,0.6)", backdropFilter: "blur(8px)" }}>
-                      {char.status}
+                <HoloCard
+                  className="rounded-xl cursor-pointer overflow-hidden h-full"
+                  style={{ background: col.bg, border: `1px solid ${col.border}`, backdropFilter: "blur(12px)" }}
+                  color={col.accent}
+                  glowColor={col.glow}
+                  intensity={12}
+                  cornerBrackets
+                  animatedBorder
+                  onClick={() => handleOpen(char)}
+                  data-testid={`card-character-${char.id}`}
+                >
+                  {/* Photo */}
+                  <div className="relative h-44 overflow-hidden">
+                    <img
+                      src={char.image}
+                      alt={char.name}
+                      className="w-full h-full object-cover transition-transform duration-700"
+                      style={{ filter: "brightness(0.85) saturate(1.2)" }}
+                    />
+                    <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, ${col.bg.replace("0.06", "0.95")} 100%)` }} />
+                    {/* Scan line */}
+                    <motion.div
+                      className="absolute left-0 right-0 h-px pointer-events-none"
+                      style={{ background: `linear-gradient(90deg, transparent, ${col.accent}, transparent)` }}
+                      animate={{ y: [0, 176, 0] }}
+                      transition={{ duration: 3 + i * 0.2, repeat: Infinity, ease: "linear" }}
+                    />
+                    <div className="absolute top-3 right-3">
+                      <div className={`text-[10px] font-mono px-2 py-0.5 border rounded ${statusColors[char.status] ?? "text-slate-400 border-slate-800"}`}
+                        style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(8px)", fontFamily: "'Share Tech Mono', monospace" }}>
+                        {char.status}
+                      </div>
+                    </div>
+                    <div className="absolute bottom-3 left-4">
+                      <div className={`text-[10px] font-mono ${col.text}`} style={{ fontFamily: "'Share Tech Mono', monospace" }}>
+                        {char.represents.toUpperCase()}
+                      </div>
                     </div>
                   </div>
-                  <div className="absolute bottom-3 left-4">
-                    <div className={`text-xs font-mono mb-0.5 ${col.text}`}>Represents: {char.represents}</div>
-                  </div>
-                </div>
 
-                <div className="p-4">
-                  <h3 className="font-bold text-white mb-1" style={{ fontFamily: "'Orbitron', sans-serif" }}>
-                    {char.name}
-                  </h3>
-                  <div className="text-xs text-slate-500 font-mono mb-2">{char.role}</div>
-                  <p className="text-xs text-slate-400 leading-relaxed line-clamp-2">{char.description}</p>
-                  <div className="mt-3 flex items-center justify-between">
-                    <div className="text-xs text-slate-600 font-mono">Clan: {char.clan}</div>
-                    <div className="text-xs text-slate-700 font-mono">View profile</div>
+                  <div className="p-4">
+                    <GlitchText as="h3" className="font-bold text-white mb-1 text-sm" style={{ fontFamily: "'Orbitron', sans-serif" }} intensity="low">
+                      {char.name}
+                    </GlitchText>
+                    <div className="text-[10px] text-slate-500 font-mono mb-2" style={{ fontFamily: "'Share Tech Mono', monospace" }}>{char.role}</div>
+                    <p className="text-xs text-slate-400 leading-relaxed line-clamp-2">{char.description}</p>
+                    <div className="mt-3 flex items-center justify-between">
+                      <div className="text-[10px] text-slate-600 font-mono">CLAN: {char.clan.toUpperCase()}</div>
+                      <div className={`text-[10px] font-mono ${col.text}`} style={{ fontFamily: "'Share Tech Mono', monospace" }}>VIEW →</div>
+                    </div>
                   </div>
-                </div>
+                </HoloCard>
               </motion.div>
             );
           })}

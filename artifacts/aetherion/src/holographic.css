@@ -1,0 +1,347 @@
+/* ============================================================
+   AETHERION HOLOGRAPHIC DESIGN SYSTEM
+   Global 3D + Hologram UI layer
+   ============================================================ */
+
+/* Animated border property */
+@property --border-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@property --holo-hue {
+  syntax: '<number>';
+  initial-value: 195;
+  inherits: false;
+}
+
+/* ─── Keyframes ─────────────────────────────────────────── */
+
+@keyframes border-spin {
+  to { --border-angle: 360deg; }
+}
+
+@keyframes glitch-clip-1 {
+  0%,100% { clip-path: polygon(0 2%,100% 2%,100% 6%,0 6%);   transform: translate(-3px, 0); }
+  20%      { clip-path: polygon(0 78%,100% 78%,100% 83%,0 83%); transform: translate(3px, 0); }
+  40%      { clip-path: polygon(0 44%,100% 44%,100% 48%,0 48%); transform: translate(0,0); }
+  60%      { clip-path: polygon(0 60%,100% 60%,100% 66%,0 66%); transform: translate(-2px, 0); }
+  80%      { clip-path: polygon(0 28%,100% 28%,100% 35%,0 35%); transform: translate(2px, 0); }
+}
+@keyframes glitch-clip-2 {
+  0%,100% { clip-path: polygon(0 50%,100% 50%,100% 56%,0 56%); transform: translate(3px, 0); }
+  25%      { clip-path: polygon(0 15%,100% 15%,100% 22%,0 22%); transform: translate(-3px, 0); }
+  50%      { clip-path: polygon(0 72%,100% 72%,100% 79%,0 79%); transform: translate(1px, 0); }
+  75%      { clip-path: polygon(0 33%,100% 33%,100% 39%,0 39%); transform: translate(-1px, 0); }
+}
+
+@keyframes scan-down {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  5%   { opacity: 1; }
+  95%  { opacity: 1; }
+  100% { transform: translateY(3000%); opacity: 0; }
+}
+
+@keyframes holo-float {
+  0%, 100% { transform: translateY(0px) rotateX(0deg); }
+  50%       { transform: translateY(-8px) rotateX(2deg); }
+}
+
+@keyframes holo-pulse-border {
+  0%, 100% { box-shadow: 0 0 0 0 var(--pulse-color, rgba(0,212,255,0)); }
+  50%       { box-shadow: 0 0 0 4px var(--pulse-color, rgba(0,212,255,0.15)); }
+}
+
+@keyframes flicker {
+  0%, 89%, 91%, 93%, 96%, 100% { opacity: 1; }
+  90%  { opacity: 0.85; }
+  92%  { opacity: 0.95; }
+  94%  { opacity: 0.8; }
+  95%  { opacity: 1; }
+}
+
+@keyframes holo-shine {
+  0%   { transform: translateX(-100%) skewX(-15deg); }
+  100% { transform: translateX(250%) skewX(-15deg); }
+}
+
+@keyframes neon-glow-pulse {
+  0%, 100% { text-shadow: 0 0 8px rgba(0,212,255,0.6), 0 0 16px rgba(0,212,255,0.3); }
+  50%       { text-shadow: 0 0 16px rgba(0,212,255,1), 0 0 32px rgba(0,212,255,0.6), 0 0 48px rgba(0,212,255,0.3); }
+}
+
+@keyframes corner-draw {
+  from { stroke-dashoffset: 40; }
+  to   { stroke-dashoffset: 0; }
+}
+
+@keyframes hud-blink {
+  0%, 90%, 100% { opacity: 1; }
+  95%           { opacity: 0; }
+}
+
+@keyframes data-stream {
+  0%   { transform: translateY(0); opacity: 0.3; }
+  100% { transform: translateY(-100%); opacity: 0; }
+}
+
+@keyframes rotate-slow {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes counter-rotate {
+  to { transform: rotate(-360deg); }
+}
+
+/* ─── Utility classes ───────────────────────────────────── */
+
+/* Page-level holographic flicker */
+.holo-flicker { animation: flicker 12s infinite; }
+
+/* Floating cards */
+.holo-float { animation: holo-float 5s ease-in-out infinite; }
+
+/* Scanlines overlay (applied as ::after pseudo on a parent) */
+.scanlines {
+  position: relative;
+  isolation: isolate;
+}
+.scanlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 212, 255, 0.018) 2px,
+    rgba(0, 212, 255, 0.018) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+/* Animated spinning neon border */
+.neon-border-spin {
+  position: relative;
+  background-clip: padding-box;
+}
+.neon-border-spin::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--border-angle),
+    transparent 0deg,
+    transparent 40deg,
+    rgba(0,212,255,0.9) 90deg,
+    rgba(139,92,246,0.9) 180deg,
+    rgba(0,212,255,0.3) 220deg,
+    transparent 260deg
+  );
+  animation: border-spin 3s linear infinite;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.neon-border-spin:hover::before { opacity: 1; }
+
+/* Static neon border glow on hover */
+.holo-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* Holographic panels */
+.holo-panel {
+  background: rgba(6, 9, 26, 0.92);
+  border: 1px solid rgba(0, 212, 255, 0.12);
+  backdrop-filter: blur(20px) saturate(1.4);
+  position: relative;
+  isolation: isolate;
+}
+
+/* HUD corner brackets via CSS */
+.hud-corners {
+  position: relative;
+}
+.hud-corners::before,
+.hud-corners::after,
+.hud-corners > .hud-corner-br,
+.hud-corners > .hud-corner-tl {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+.hud-corners::before {
+  top: 0; left: 0;
+  border-top: 1px solid rgba(0,212,255,0.5);
+  border-left: 1px solid rgba(0,212,255,0.5);
+}
+.hud-corners::after {
+  bottom: 0; right: 0;
+  border-bottom: 1px solid rgba(0,212,255,0.5);
+  border-right: 1px solid rgba(0,212,255,0.5);
+}
+
+/* Shine sweep on hover */
+.holo-shine {
+  position: relative;
+  overflow: hidden;
+}
+.holo-shine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.06) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%) skewX(-15deg);
+  pointer-events: none;
+}
+.holo-shine:hover::after {
+  animation: holo-shine 0.7s ease forwards;
+}
+
+/* Glitch text — data-text attribute is required */
+.glitch-text {
+  position: relative;
+  display: inline-block;
+}
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  pointer-events: none;
+  opacity: 0;
+}
+.glitch-text:hover::before {
+  opacity: 1;
+  color: rgba(0,212,255,0.75);
+  animation: glitch-clip-1 0.35s steps(2) forwards;
+}
+.glitch-text:hover::after {
+  opacity: 1;
+  color: rgba(139,92,246,0.75);
+  animation: glitch-clip-2 0.35s steps(2) 0.05s forwards;
+}
+
+/* Neon text glow */
+.neon-cyan {
+  text-shadow: 0 0 8px rgba(0,212,255,0.7), 0 0 20px rgba(0,212,255,0.4);
+}
+.neon-violet {
+  text-shadow: 0 0 8px rgba(139,92,246,0.7), 0 0 20px rgba(139,92,246,0.4);
+}
+.neon-amber {
+  text-shadow: 0 0 8px rgba(245,158,11,0.7), 0 0 20px rgba(245,158,11,0.4);
+}
+.neon-red {
+  text-shadow: 0 0 8px rgba(220,38,38,0.7), 0 0 20px rgba(220,38,38,0.4);
+}
+.neon-pulse { animation: neon-glow-pulse 2s ease-in-out infinite; }
+
+/* Holographic gradient text */
+.holo-gradient-text {
+  background: linear-gradient(
+    135deg,
+    #e2e8f0 0%,
+    #00d4ff 25%,
+    #8b5cf6 50%,
+    #00d4ff 75%,
+    #e2e8f0 100%
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: holo-text-shift 6s ease-in-out infinite;
+}
+@keyframes holo-text-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Holographic grid overlay on page bg */
+.holo-grid-bg::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Active scan line */
+.scan-line-anim {
+  position: relative;
+  overflow: hidden;
+}
+.scan-line-anim::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0,212,255,0.4), transparent);
+  animation: scan-down 6s linear infinite;
+  z-index: 20;
+  pointer-events: none;
+}
+
+/* Data stream (vertical text) */
+.data-stream-text {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  color: rgba(0,212,255,0.3);
+  letter-spacing: 0.15em;
+  line-height: 1.6;
+  overflow: hidden;
+}
+
+/* Button holographic upgrade */
+.holo-btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+.holo-btn::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--border-angle),
+    transparent 0deg,
+    currentColor 90deg,
+    transparent 180deg
+  );
+  animation: border-spin 2s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: -1;
+}
+.holo-btn:hover::before { opacity: 0.6; }
+
+/* Hexagonal pattern (decorative) */
+.hex-bg {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z' fill='rgba(0%2C212%2C255%2C0.025)' fill-rule='evenodd'/%3E%3C/svg%3E");
+}

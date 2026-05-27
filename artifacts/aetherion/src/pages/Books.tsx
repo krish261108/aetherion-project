@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { BookOpen, X, AlertTriangle, Skull, ChevronDown, ChevronUp } from "lucide-react";
 import { books, Book } from "@/data/booksData";
 import SectionHeader from "@/components/SectionHeader";
+import HoloCard from "@/components/HoloCard";
+import GlitchText from "@/components/GlitchText";
 
 const dangerColors: Record<string, string> = {
   LOW: "text-green-400 border-green-800",
@@ -70,53 +72,41 @@ export default function Books() {
               {(filter === "All" ? coreBooks : books.filter((b) => b.type === "Core")).map((book, i) => (
                 <motion.div
                   key={book.id}
-                  className="rounded-xl cursor-pointer relative overflow-hidden group"
-                  style={{
-                    background: "rgba(10,15,40,0.7)",
-                    border: "1px solid rgba(0,212,255,0.15)",
-                    backdropFilter: "blur(10px)",
-                  }}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.07 }}
-                  whileHover={{
-                    borderColor: "rgba(0,212,255,0.4)",
-                    boxShadow: `0 0 30px ${dangerGlows[book.danger]}`,
-                    scale: 1.02,
-                  }}
-                  onClick={() => handleOpen(book)}
-                  data-testid={`card-book-${book.id}`}
                 >
-                  {/* Image */}
-                  <div className="relative h-40 overflow-hidden">
-                    <img
-                      src={book.image}
-                      alt={book.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(10,15,40,0.95) 100%)" }} />
-                    <div className="absolute top-3 left-3 text-xs text-cyan-400/60 font-mono">
-                      {book.number ? `BOOK ${book.number}` : "CORE"}
+                  <HoloCard
+                    className="rounded-xl cursor-pointer overflow-hidden h-full"
+                    style={{ background: "rgba(6,9,26,0.85)", border: "1px solid rgba(0,212,255,0.15)", backdropFilter: "blur(12px)" }}
+                    color="rgba(0,212,255,1)"
+                    glowColor={dangerGlows[book.danger]}
+                    intensity={12}
+                    cornerBrackets
+                    animatedBorder
+                    onClick={() => handleOpen(book)}
+                    data-testid={`card-book-${book.id}`}
+                  >
+                    <div className="relative h-40 overflow-hidden">
+                      <img src={book.image} alt={book.title} className="w-full h-full object-cover" style={{ filter: "brightness(0.45) saturate(1.3)" }} />
+                      <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(6,9,26,0.97) 100%)" }} />
+                      <motion.div className="absolute left-0 right-0 h-px pointer-events-none" style={{ background: "linear-gradient(90deg, transparent, rgba(0,212,255,0.5), transparent)" }} animate={{ y: [0, 160, 0] }} transition={{ duration: 3 + i * 0.3, repeat: Infinity, ease: "linear" }} />
+                      <div className="absolute top-3 left-3 text-[10px] text-cyan-400/60 font-mono" style={{ fontFamily: "'Share Tech Mono', monospace" }}>
+                        {book.number ? `VOL ${book.number}` : "CORE"}
+                      </div>
+                      <div className={`absolute top-3 right-3 inline-flex items-center gap-1 text-[10px] px-2 py-0.5 border rounded font-mono ${dangerColors[book.danger]}`} style={{ background: "rgba(0,0,0,0.6)" }}>
+                        {book.danger === "OMEGA" ? <Skull size={8} /> : <AlertTriangle size={8} />}
+                        {book.danger}
+                      </div>
                     </div>
-                    <div className={`absolute top-3 right-3 inline-block text-xs px-2 py-0.5 border rounded font-mono ${dangerColors[book.danger]}`}
-                      style={{ background: "rgba(0,0,0,0.5)" }}>
-                      {book.danger === "OMEGA" ? <Skull size={9} className="inline mr-1" /> : <AlertTriangle size={9} className="inline mr-1" />}
-                      {book.danger}
+                    <div className="p-4">
+                      <GlitchText as="h3" className="text-sm font-bold text-white mb-1.5 leading-tight" style={{ fontFamily: "'Orbitron', sans-serif" }} intensity="low">{book.title}</GlitchText>
+                      <p className="text-[10px] text-cyan-400/70 italic mb-2 font-mono">{book.theme}</p>
+                      <p className="text-xs text-slate-400 leading-relaxed line-clamp-2">{book.coreIdea}</p>
+                      <div className="mt-3 text-[10px] text-slate-600 font-mono" style={{ fontFamily: "'Share Tech Mono', monospace" }}>OPEN ARCHIVE →</div>
                     </div>
-                  </div>
-
-                  <div className="p-4">
-                    <h3
-                      className="text-sm font-bold text-white mb-1.5 leading-tight"
-                      style={{ fontFamily: "'Orbitron', sans-serif" }}
-                    >
-                      {book.title}
-                    </h3>
-                    <p className="text-xs text-cyan-400/70 italic mb-2">{book.theme}</p>
-                    <p className="text-xs text-slate-400 leading-relaxed line-clamp-2">{book.coreIdea}</p>
-                    <div className="mt-3 text-xs text-slate-600 font-mono">Click to read full synopsis</div>
-                  </div>
+                  </HoloCard>
                 </motion.div>
               ))}
             </div>
@@ -133,43 +123,34 @@ export default function Books() {
               {(filter === "All" ? spinoffs : books.filter((b) => b.type === "Spin-off")).map((book, i) => (
                 <motion.div
                   key={book.id}
-                  className="rounded-xl cursor-pointer overflow-hidden group"
-                  style={{
-                    background: "rgba(15,10,40,0.7)",
-                    border: "1px solid rgba(139,92,246,0.15)",
-                    backdropFilter: "blur(10px)",
-                  }}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.08 }}
-                  whileHover={{
-                    borderColor: "rgba(139,92,246,0.4)",
-                    boxShadow: "0 0 25px rgba(139,92,246,0.18)",
-                    scale: 1.02,
-                  }}
-                  onClick={() => handleOpen(book)}
-                  data-testid={`card-book-${book.id}`}
                 >
-                  <div className="relative h-32 overflow-hidden">
-                    <img
-                      src={book.image}
-                      alt={book.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(15,10,40,0.3) 0%, rgba(15,10,40,0.97) 100%)" }} />
-                    <div className="absolute top-2 left-3 text-xs text-violet-400/60 font-mono">SPIN-OFF</div>
-                  </div>
-                  <div className="p-4">
-                    <h3
-                      className="text-sm font-bold text-white mb-1.5 leading-tight"
-                      style={{ fontFamily: "'Orbitron', sans-serif" }}
-                    >
-                      {book.title}
-                    </h3>
-                    <p className="text-xs text-violet-400/70 italic mb-2">{book.theme}</p>
-                    <p className="text-xs text-slate-400 leading-relaxed line-clamp-2">{book.coreIdea}</p>
-                  </div>
+                  <HoloCard
+                    className="rounded-xl cursor-pointer overflow-hidden h-full"
+                    style={{ background: "rgba(10,6,28,0.85)", border: "1px solid rgba(139,92,246,0.15)", backdropFilter: "blur(12px)" }}
+                    color="rgba(139,92,246,1)"
+                    glowColor="rgba(139,92,246,0.2)"
+                    intensity={12}
+                    cornerBrackets
+                    animatedBorder
+                    onClick={() => handleOpen(book)}
+                    data-testid={`card-book-${book.id}`}
+                  >
+                    <div className="relative h-32 overflow-hidden">
+                      <img src={book.image} alt={book.title} className="w-full h-full object-cover" style={{ filter: "brightness(0.4) saturate(1.2)" }} />
+                      <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(10,6,28,0.3) 0%, rgba(10,6,28,0.97) 100%)" }} />
+                      <motion.div className="absolute left-0 right-0 h-px pointer-events-none" style={{ background: "linear-gradient(90deg, transparent, rgba(139,92,246,0.5), transparent)" }} animate={{ y: [0, 128, 0] }} transition={{ duration: 2.5 + i * 0.3, repeat: Infinity, ease: "linear" }} />
+                      <div className="absolute top-2 left-3 text-[10px] text-violet-400/60 font-mono" style={{ fontFamily: "'Share Tech Mono', monospace" }}>SPIN-OFF</div>
+                    </div>
+                    <div className="p-4">
+                      <GlitchText as="h3" className="text-sm font-bold text-white mb-1.5 leading-tight" style={{ fontFamily: "'Orbitron', sans-serif" }} intensity="low">{book.title}</GlitchText>
+                      <p className="text-[10px] text-violet-400/70 italic mb-2 font-mono">{book.theme}</p>
+                      <p className="text-xs text-slate-400 leading-relaxed line-clamp-2">{book.coreIdea}</p>
+                    </div>
+                  </HoloCard>
                 </motion.div>
               ))}
             </div>
