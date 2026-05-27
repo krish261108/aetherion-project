@@ -1,0 +1,1 @@
+- [WebGL detection in Replit](webgl-replit.md) — pre-check WebGL before mounting Canvas; Replit preview has no GPU so always falls back to CSS.
