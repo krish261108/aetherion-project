@@ -144,7 +144,7 @@ export default function World() {
                   {stage.stage}
                 </div>
                 <div className={`text-xs font-mono mb-2 ${stageColors[stage.stage]}`}>{stage.name}</div>
-                <p className="text-xs text-slate-500">{stage.description}</p>
+                <p className="text-xs text-slate-500">{stage.desc}</p>
               </motion.div>
             ))}
           </div>
