@@ -1,0 +1,129 @@
+ADD A TRUE “5D IMMERSIVE EXPERIENCE” FEEL TO THE ENTIRE WEBSITE.
+
+The website should NOT feel flat or even normal 3D.
+
+It should feel:
+- dimensional
+- cinematic
+- holographic
+- spatial
+- alive
+- reactive
+- layered beyond the screen
+
+The user should feel like they are INSIDE the interface rather than looking at a webpage.
+
+CREATE A 5D DIGITAL EXPERIENCE USING:
+
+DEPTH + MOTION + LIGHT + REACTION + ATMOSPHERE
+
+5D EFFECT REQUIREMENTS:
+
+- extreme depth layering
+- multi-plane parallax movement
+- floating foreground/midground/background objects
+- environmental camera movement
+- cinematic spatial transitions
+- dynamic perspective shifting
+- holographic dimensional UI
+- volumetric lighting
+- immersive atmosphere simulation
+- reactive environmental effects
+- motion-based realism
+- living world behavior
+
+EVERYTHING SHOULD EXIST IN DEPTH:
+- icons float at different distances
+- UI panels exist on separate depth layers
+- particles move independently
+- backgrounds shift with perspective
+- mouse movement changes viewing angle
+- objects subtly rotate in space
+- lighting changes dynamically across layers
+
+MAKE THE WEBSITE FEEL “BEYOND THE SCREEN”:
+- interface extends visually outward
+- glowing energy appears spatial
+- floating holograms move in depth
+- cinematic environmental motion
+- immersive perspective distortion
+- layered transparency and refraction
+- moving light rays
+- ambient environmental animation
+
+ADVANCED IMMERSIVE EFFECTS:
+- volumetric fog/light
+- atmospheric particles
+- spatial glow systems
+- dynamic reflections
+- realistic holographic rendering
+- depth-based blur
+- cinematic focus transitions
+- energy distortion waves
+- subtle gravity/physics motion
+- reactive environmental lighting
+
+MOUSE INTERACTION:
+Mouse movement should simulate camera movement through a 5D environment:
+- scene perspective shifts
+- lighting follows cursor
+- depth changes dynamically
+- objects react independently
+- holograms tilt realistically
+- particles flow around cursor
+- UI moves with spatial inertia
+
+SCROLLING SHOULD FEEL LIKE TRAVEL:
+Scrolling should feel like moving through dimensions:
+- layered environmental transitions
+- cinematic camera movement
+- evolving atmosphere
+- spatial transformations
+- floating worlds appearing
+- depth-based scene changes
+- animated dimensional shifts
+
+EVERY CLICK MUST CREATE IMPACT:
+- energy shockwaves
+- ripple distortions
+- holographic bursts
+- dimensional pulses
+- particle explosions
+- cinematic light reactions
+- environmental response
+
+CREATE A “LIVING COSMIC SYSTEM” ATMOSPHERE:
+The site should constantly feel active:
+- breathing glow effects
+- moving energy streams
+- floating cosmic particles
+- animated holographic grids
+- subtle ambient movement
+- evolving backgrounds
+- reactive lighting systems
+
+ADD AAA GAME / SCI-FI MOVIE LEVEL PRESENTATION:
+Inspired by:
+- Iron Man HUDs
+- Interstellar visuals
+- Tron Legacy
+- Blade Runner 2049
+- Destiny 2 interfaces
+- advanced AI operating systems
+- futuristic spaceship control rooms
+
+MAKE THE WEBSITE FEEL:
+- impossibly futuristic
+- ultra-premium
+- cinematic
+- immersive
+- intelligent
+- alive
+- spatially interactive
+- visually overwhelming in a good way
+
+IMPORTANT:
+NO static elements.
+EVERYTHING should move, react, glow, shift, animate, float, pulse, or evolve in some way.
+
+The final experience should feel less like a website and more like entering a futuristic holographic dimension.
