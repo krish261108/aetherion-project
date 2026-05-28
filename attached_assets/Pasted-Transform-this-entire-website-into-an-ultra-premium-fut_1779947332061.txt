@@ -1,0 +1,147 @@
+Transform this entire website into an ultra-premium futuristic cinematic holographic experience inspired by next-generation sci-fi interfaces, AI operating systems, cosmic technology, and immersive WebGL experiences.
+
+The website should NOT feel like a normal website.
+It should feel like:
+- a living holographic system
+- an advanced cosmic interface
+- a cinematic sci-fi environment
+- an interactive digital universe
+
+CORE DESIGN LANGUAGE:
+- futuristic holographic UI
+- cinematic dark atmosphere
+- deep space/cosmic aesthetic
+- glowing crystal-energy visuals
+- immersive 3D depth
+- ultra-smooth motion
+- layered glassmorphism
+- neon energy lighting
+- floating interface systems
+- volumetric futuristic lighting
+- premium AAA-quality animations
+
+VISUAL STYLE:
+- dark background with animated cosmic gradients
+- holographic blue/cyan/purple energy glow
+- transparent glass panels with blur
+- glowing borders and animated outlines
+- dynamic lighting reflections
+- subtle noise textures
+- floating particles everywhere
+- animated stars, energy waves, and grid systems
+- moving nebula/fog effects
+- glowing energy trails
+- ambient cinematic atmosphere
+
+EVERYTHING MUST FEEL ALIVE:
+Every element should react dynamically to:
+- mouse movement
+- hovering
+- scrolling
+- clicking
+- page transitions
+- cursor velocity
+
+INTERACTIONS:
+- cards tilt in realistic 3D when hovered
+- glow follows cursor movement
+- buttons emit energy pulses when hovered
+- clicking creates ripple/light burst effects
+- sections animate into existence while scrolling
+- UI elements float slightly with motion physics
+- magnetic hover interactions
+- smooth inertia animations everywhere
+- animated holographic transitions
+- parallax depth movement for all layers
+- dynamic lighting shifts based on cursor position
+
+SCROLL EXPERIENCE:
+Scrolling should feel cinematic and immersive:
+- ultra-smooth scrolling with inertia
+- layered parallax backgrounds
+- cinematic section reveals
+- animated camera-like transitions
+- floating objects moving in depth
+- sections morph and transition smoothly
+- background environments evolve during scroll
+- particles respond to scroll direction/speed
+
+3D / WEBGL FEATURES:
+Use advanced modern web visuals:
+- Three.js / React Three Fiber style rendering
+- animated 3D holographic objects
+- floating energy crystals
+- rotating cosmic structures
+- holographic rings/orbs
+- dynamic particle systems
+- volumetric lighting
+- animated shaders
+- realistic depth and perspective
+- subtle motion blur
+- reflective surfaces
+
+BACKGROUND SYSTEM:
+The background must NEVER feel static.
+Include:
+- animated galaxy/cosmic environment
+- moving stars
+- floating particles
+- glowing grids
+- energy streams
+- atmospheric fog
+- subtle animated nebula
+- layered depth backgrounds
+- reactive lighting
+
+UI STYLE:
+- sleek futuristic typography
+- glowing futuristic icons
+- minimal but cinematic layout
+- large immersive hero sections
+- floating holographic navigation
+- animated transparent menus
+- premium modern spacing
+- advanced sci-fi dashboard aesthetic
+
+MICROINTERACTIONS:
+EVERY interaction should feel premium:
+- hover glow
+- ripple effects
+- soft elastic motion
+- animated borders
+- smooth fades
+- particle bursts
+- energy pulses
+- liquid transitions
+- floating effects
+- responsive depth changes
+
+AUDIO VISUAL FEEL:
+Even without actual sound, the visuals should FEEL like:
+- energy
+- power
+- intelligence
+- futuristic technology
+- cosmic mystery
+- advanced civilization
+
+PERFORMANCE:
+Even with all effects:
+- maintain smooth 60fps feel
+- optimize animations
+- lazy-load heavy effects
+- smooth responsiveness on all screen sizes
+
+TECH STACK STYLE:
+Use modern immersive web techniques inspired by:
+- Three.js
+- WebGL
+- GSAP
+- Framer Motion
+- cinematic scroll systems
+- premium award-winning Awwwards websites
+
+FINAL GOAL:
+The website should feel like one of the most advanced futuristic websites on the internet — cinematic, immersive, holographic, reactive, and visually unforgettable.
+
+Every click, hover, movement, and scroll should trigger beautiful responsive effects and make the site feel like a living futuristic system rather than a static webpage.

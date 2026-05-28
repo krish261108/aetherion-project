@@ -1,0 +1,188 @@
+Upgrade the ENTIRE website into a fully cinematic, holographic, ultra-interactive futuristic experience where EVERY element feels alive and reactive.
+
+IMPORTANT:
+NO static UI.
+NO boring transitions.
+NO normal website behavior.
+
+EVERY:
+- page
+- section
+- icon
+- button
+- card
+- menu
+- image
+- text block
+- navigation item
+- hover state
+- click interaction
+
+must have premium cinematic animations and immersive effects.
+
+GLOBAL EXPERIENCE:
+The entire site should feel like:
+- an advanced holographic operating system
+- a living cosmic interface
+- a futuristic AI control system
+- a sci-fi cinematic environment
+- a next-generation immersive web experience
+
+EVERY PAGE MUST FEEL UNIQUE:
+Each page should have:
+- its own ambient lighting
+- unique animated background
+- different particle behavior
+- custom transition style
+- cinematic entrance animations
+- evolving atmosphere
+
+NO page should feel identical.
+
+PAGE TRANSITIONS:
+Transitions between pages must feel cinematic and seamless:
+- portal-like transitions
+- holographic dissolves
+- energy wave wipes
+- smooth camera motion
+- dimensional warp effects
+- animated scene morphing
+- glowing transition overlays
+- particle disintegration/reformation
+- smooth fade-depth transitions
+
+NAVIGATION:
+Navigation should feel futuristic and intelligent:
+- floating holographic navbar
+- transparent glass navigation
+- glowing active states
+- animated underline energy trails
+- hover pulse effects
+- icons animate individually
+- navigation reacts to cursor movement
+- dropdown menus unfold holographically
+- menus slide with cinematic motion physics
+- opening menus triggers environmental lighting changes
+
+ICON INTERACTIONS:
+EVERY icon should have advanced effects:
+- glowing hover states
+- 3D rotation/parallax
+- energy pulse animation
+- ripple effects on click
+- animated outlines
+- holographic shine sweeps
+- floating motion
+- particle emission on interaction
+- reactive lighting
+- cinematic scaling transitions
+
+BUTTONS:
+Buttons should NEVER feel basic:
+- magnetic hover effect
+- glowing energy borders
+- pulse animation
+- ripple/light burst on click
+- liquid transitions
+- smooth depth changes
+- animated gradients
+- reactive cursor lighting
+- soft physics movement
+
+CARDS & PANELS:
+Cards should behave like futuristic holograms:
+- layered glassmorphism
+- realistic 3D tilt
+- animated reflections
+- cursor-reactive lighting
+- floating movement
+- depth-based hover
+- glow expansion
+- holographic border tracing
+- animated scan lines
+- energy shimmer effects
+
+SCROLL SYSTEM:
+Scrolling should feel like cinematic navigation through a futuristic world:
+- ultra smooth inertia scrolling
+- layered parallax movement
+- sections emerge dynamically
+- animated environmental transitions
+- moving depth layers
+- floating 3D objects
+- cinematic camera feel
+- scrolling affects particles and lighting
+- atmospheric transformation during scroll
+
+BACKGROUND SYSTEM:
+Backgrounds should constantly evolve:
+- animated nebula
+- moving stars
+- cosmic particles
+- holographic grids
+- energy streams
+- volumetric fog
+- ambient light movement
+- depth-based layered motion
+- subtle environmental animation
+- interactive background reactions
+
+TEXT ANIMATIONS:
+Text should animate beautifully:
+- cinematic reveals
+- staggered motion
+- glowing transitions
+- energy typing effects
+- holographic flicker
+- floating movement
+- animated gradients
+- smooth blur-to-focus transitions
+
+ADVANCED VISUAL EFFECTS:
+Add:
+- volumetric lighting
+- motion blur
+- bloom/glow effects
+- realistic shadows
+- glass refraction
+- shader effects
+- animated gradients
+- reflective surfaces
+- subtle distortion effects
+- particle physics
+- holographic rendering feel
+
+IMMERSIVE DETAILS:
+Small details should make the site feel premium:
+- cursor glow trail
+- hover sound visualization feel
+- environmental light shifts
+- animated separators
+- glowing dividers
+- smooth elastic motion
+- cinematic loading animations
+- interactive particles
+- dynamic reflections
+- intelligent motion response
+
+3D & WEBGL:
+Use modern immersive web technologies:
+- Three.js
+- React Three Fiber
+- GSAP
+- Framer Motion
+- shader animations
+- WebGL effects
+- cinematic rendering techniques
+
+FINAL GOAL:
+The website should feel like:
+- a billion-dollar futuristic product
+- an award-winning Awwwards experience
+- an interactive sci-fi movie interface
+- a living holographic world
+
+Every interaction should create visual feedback.
+Every click should feel powerful.
+Every hover should trigger cinematic motion.
+Every page should feel immersive and unforgettable.
